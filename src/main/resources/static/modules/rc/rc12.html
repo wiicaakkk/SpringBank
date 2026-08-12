@@ -1,0 +1,29 @@
+<div id="moduleRC12" class="card">
+    <div class="menu-banner">
+        <span>MODUL AKTIF: <strong>[RC12] INQUIRY & DATABASE CIF NASABAH BANK</strong></span>
+        <button onclick="executeMenuCommand('CLEAR')" style="background:none; border:none; color:var(--accent-blue); cursor:pointer;">[ Tutup Modul ]</button>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchKeyword" placeholder="Cari berdasarkan CIF, NIK, atau Nama..." onkeyup="if(event.key==='Enter') doSearch()">
+        <button onclick="doSearch()" class="btn">Cari Data</button>
+        <button onclick="loadNasabah()" class="btn">Reset Filter</button>
+    </div>
+
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>No. CIF</th>
+                    <th>Nama / NIK</th>
+                    <th>Email / HP</th>
+                    <th>Status</th>
+                    <th>Aksi Teller / Supervisor</th>
+                </tr>
+            </thead>
+            <tbody id="nasabahTableBody">
+                <tr><td colspan="5" style="text-align: center;">Memuat data CIF...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -112,57 +112,7 @@
         .role-supervisor { background: rgba(139, 92, 246, 0.2); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
         .role-admin { background: rgba(251, 191, 36, 0.2); color: var(--accent-gold); border: 1px solid var(--accent-gold); }
 
-        /* Teller Command Fast-Path Bar */
-        .terminal-bar {
-            background: linear-gradient(135deg, #16223b, #0f172a);
-            border: 2px solid var(--accent-gold);
-            border-radius: 14px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
 
-        .command-input-group {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex: 1;
-        }
-
-        .command-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            color: var(--accent-gold);
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            white-space: nowrap;
-        }
-
-        .command-input {
-            background-color: #060913 !important;
-            border: 2px solid var(--accent-gold) !important;
-            color: var(--accent-gold) !important;
-            font-family: 'JetBrains Mono', monospace !important;
-            font-size: 1.2rem !important;
-            font-weight: 700 !important;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 0.65rem 1.2rem !important;
-            border-radius: 8px !important;
-            width: 220px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .command-input:focus {
-            outline: none;
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
-        }
 
         .btn {
             background-color: var(--bg-input);
@@ -228,11 +178,6 @@
             .main-layout {
                 grid-template-columns: 1fr;
             }
-        }
-
-        /* Screen Sections (Left Column) */
-        .module-section {
-            display: none;
         }
 
         .welcome-screen {
@@ -353,15 +298,8 @@
         .tag-dp { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); border: 1px solid rgba(59, 130, 246, 0.3); }
         .tag-nc { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
 
-        .menu-desc {
-            font-size: 0.8rem;
-            color: var(--text-main);
-        }
-
-        .menu-subdesc {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
+        .menu-desc { font-size: 0.8rem; color: var(--text-main); }
+        .menu-subdesc { font-size: 0.7rem; color: var(--text-muted); }
 
         /* Form & Table Styles */
         .form-row {
@@ -377,9 +315,14 @@
             gap: 0.4rem;
         }
 
-        .form-group.full {
-            grid-column: span 2;
+        .form-group.full { grid-column: span 2; }
+
+        .input-lookup-group {
+            display: flex;
+            gap: 0.4rem;
         }
+
+        .input-lookup-group input { flex: 1; }
 
         label {
             font-size: 0.8rem;
@@ -398,14 +341,23 @@
             font-size: 0.9rem;
         }
 
-        input:focus, select:focus {
-            border-color: var(--accent-blue);
-        }
+        input:focus, select:focus { border-color: var(--accent-blue); }
 
         .cif-badge {
             background-color: rgba(59, 130, 246, 0.15);
             color: var(--accent-blue);
             border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .rek-badge {
+            background-color: rgba(251, 191, 36, 0.15);
+            color: var(--accent-gold);
+            border: 1px solid rgba(251, 191, 36, 0.3);
             padding: 0.25rem 0.6rem;
             border-radius: 6px;
             font-family: 'JetBrains Mono', monospace;
@@ -444,9 +396,7 @@
             letter-spacing: 0.5px;
         }
 
-        tr:hover td {
-            background-color: rgba(27, 38, 64, 0.5);
-        }
+        tr:hover td { background-color: rgba(27, 38, 64, 0.5); }
 
         .search-box {
             display: flex;
@@ -454,9 +404,7 @@
             margin-bottom: 1rem;
         }
 
-        .search-box input {
-            flex: 1;
-        }
+        .search-box input { flex: 1; }
 
         .alert-cif {
             background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 78, 59, 0.4));
@@ -479,7 +427,6 @@
             max-height: 140px;
         }
 
-        /* Modal Overlay Styles */
         .modal-overlay {
             display: flex;
             position: fixed;
@@ -588,11 +535,18 @@
                 <div class="bank-logo">BANK</div>
                 <div>
                     <h1>Core Banking Terminal System</h1>
-                    <div class="subtitle">Multi-Module Teller & CIF Management Platform</div>
+                    <div class="subtitle">Multi-Module Teller, CIF & Rekening Deposit Platform</div>
                 </div>
             </div>
             
-            <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <!-- COMPACT MINIMALIST KODE MENU INPUT -->
+                <div style="display: flex; align-items: center; gap: 0.4rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.25rem 0.5rem; border-radius: 10px;">
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent-gold); font-weight: 700;">MENU:</span>
+                    <input type="text" id="menuCodeInput" placeholder="DP01" maxlength="6" onkeyup="if(event.key==='Enter') runMenuFromInput()" style="width: 80px; font-family: 'JetBrains Mono', monospace; font-weight: 700; text-transform: uppercase; color: var(--accent-gold); background: #060913; border: 1px solid var(--accent-gold); padding: 0.3rem 0.5rem; border-radius: 6px; font-size: 0.85rem; text-align: center; outline: none;">
+                    <button onclick="runMenuFromInput()" class="btn btn-gold" style="padding: 0.3rem 0.6rem; font-size: 0.78rem;">Buka</button>
+                </div>
+
                 <!-- ACTIVE USER BADGE -->
                 <div id="userBadge" class="user-badge" style="display: none;">
                     <div>
@@ -602,228 +556,29 @@
                     <span id="badgeRole" class="role-tag role-teller">TELLER</span>
                 </div>
 
-                <button onclick="doLogout()" id="logoutBtn" class="btn btn-red" style="display: none;">Logout</button>
-                <button onclick="executeMenuCommand('CLEAR')" class="btn">Close Menu</button>
+                <button onclick="doLogout()" id="logoutBtn" class="btn btn-red" style="display: none; padding: 0.35rem 0.6rem; font-size: 0.8rem;">Logout</button>
+                <button onclick="executeMenuCommand('CLEAR')" class="btn" style="padding: 0.35rem 0.6rem; font-size: 0.8rem;">Close Menu</button>
             </div>
         </header>
 
-        <!-- Teller Command Fast-Path Bar -->
-        <div class="terminal-bar">
-            <div class="command-input-group">
-                <span class="command-label">KODE MENU:</span>
-                <input type="text" id="menuCodeInput" class="command-input" placeholder="E.G. RC11" maxlength="6" onkeyup="if(event.key==='Enter') runMenuFromInput()">
-                <button onclick="runMenuFromInput()" class="btn btn-gold">Buka Menu</button>
-            </div>
-        </div>
-
-        <!-- Alert Notification for New CIF / Update -->
+        <!-- Alert Notification -->
         <div id="cifAlert" class="alert-cif">
-            <h4 style="color: var(--accent-green); margin-bottom: 0.3rem;" id="alertTitle">Pendaftaran Nasabah Berhasil!</h4>
-            <div id="alertDesc">Nomor CIF Resmi: <span id="newCifNumber" class="cif-badge" style="font-size: 1rem;">-</span></div>
+            <h4 style="color: var(--accent-green); margin-bottom: 0.3rem;" id="alertTitle">Pendaftaran Berhasil!</h4>
+            <div id="alertDesc">Nomor Respon: <span id="newCifNumber" class="cif-badge" style="font-size: 1rem;">-</span></div>
         </div>
 
         <!-- DYNAMIC MAIN WORKSPACE -->
         <div id="mainLayout" class="main-layout">
             
-            <!-- LEFT COLUMN: ACTIVE MODULE WORKSPACE -->
-            <div class="left-workspace">
+            <!-- LEFT COLUMN: DYNAMICALLY INJECTED MODULE WORKSPACE -->
+            <div class="left-workspace" id="moduleContainer">
                 
-                <!-- SCREEN 0: WELCOME STANDBY SCREEN -->
+                <!-- STANDBY DEFAULT SCREEN -->
                 <div id="welcomeScreen" class="welcome-screen">
                     <h2 style="margin-bottom: 0.5rem; text-align: center;">Core Banking Terminal System Standby</h2>
                     <p style="color: var(--text-muted); text-align: center; max-width: 550px; margin: 0 auto 1rem auto; font-size: 0.95rem;">
-                        Sistem dalam posisi Standby. Silakan ketik <strong>Kode Menu</strong> di kolom atas (contoh: <code style="color:var(--accent-gold);">RC11</code>, <code style="color:var(--accent-gold);">RC14</code>) atau klik folder menu di sebelah kanan untuk melihat daftar transaksi.
+                        Sistem dalam posisi Standby. Ketik <strong>Kode Menu</strong> di kolom atas (contoh: <code style="color:var(--accent-gold);">RC11</code>, <code style="color:var(--accent-gold);">DP01</code>, <code style="color:var(--accent-gold);">DP02</code>) atau klik menu di direktori sebelah kanan.
                     </p>
-                </div>
-
-                <!-- SCREEN 1: MODUL RC11 (Pendaftaran Nasabah CIF Baru) -->
-                <div id="moduleRC11" class="module-section card">
-                    <div class="menu-banner">
-                        <span>MODUL AKTIF: <strong>[RC11] PENDAFTARAN NASABAH BARU & GENERATOR CIF</strong></span>
-                        <button onclick="executeMenuCommand('CLEAR')" style="background:none; border:none; color:var(--accent-blue); cursor:pointer;">[ Tutup Modul ]</button>
-                    </div>
-                    
-                    <form id="registerForm" onsubmit="submitRegistration(event)">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>NIK (16 Digit KTP) *</label>
-                                <input type="text" id="nik" maxlength="16" required placeholder="3171012005900004">
-                            </div>
-                            <div class="form-group">
-                                <label>Nama Lengkap *</label>
-                                <input type="text" id="namaLengkap" required placeholder="Rina Melati">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Tempat Lahir *</label>
-                                <input type="text" id="tempatLahir" required placeholder="Jakarta">
-                            </div>
-                            <div class="form-group">
-                                <label>Tanggal Lahir *</label>
-                                <input type="date" id="tanggalLahir" required>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Jenis Kelamin *</label>
-                                <select id="jenisKelamin" required>
-                                    <option value="LAKI_LAKI">Laki-Laki</option>
-                                    <option value="PEREMPUAN">Perempuan</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Nama Ibu Kandung *</label>
-                                <input type="text" id="ibuKandung" required placeholder="Siti Rahma">
-                            </div>
-                        </div>
-
-                        <div class="form-group full" style="margin-bottom: 1rem;">
-                            <label>Alamat Lengkap *</label>
-                            <input type="text" id="alamat" required placeholder="Jl. Gatot Subroto No. 88, Jakarta">
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Nomor HP *</label>
-                                <input type="text" id="nomorHp" required placeholder="081299887766">
-                            </div>
-                            <div class="form-group">
-                                <label>Email *</label>
-                                <input type="email" id="email" required placeholder="rina@example.com">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Pekerjaan *</label>
-                                <input type="text" id="pekerjaan" required placeholder="Manager Operations">
-                            </div>
-                            <div class="form-group">
-                                <label>Penghasilan Bulanan (Rp) *</label>
-                                <input type="number" id="penghasilanBulanan" required placeholder="15000000">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 0.5rem; justify-content: center; padding: 0.8rem; font-size: 1rem;">
-                            Proses CIF & Daftar Nasabah Baru
-                        </button>
-                    </form>
-                </div>
-
-                <!-- SCREEN 2: MODUL RC12 (Inquiry & List Database Nasabah CIF) -->
-                <div id="moduleRC12" class="module-section card">
-                    <div class="menu-banner">
-                        <span>MODUL AKTIF: <strong>[RC12] INQUIRY & DATABASE CIF NASABAH BANK</strong></span>
-                        <button onclick="executeMenuCommand('CLEAR')" style="background:none; border:none; color:var(--accent-blue); cursor:pointer;">[ Tutup Modul ]</button>
-                    </div>
-
-                    <div class="search-box">
-                        <input type="text" id="searchKeyword" placeholder="Cari berdasarkan CIF, NIK, atau Nama..." onkeyup="if(event.key==='Enter') doSearch()">
-                        <button onclick="doSearch()" class="btn">Cari Data</button>
-                        <button onclick="loadNasabah()" class="btn">Reset Filter</button>
-                    </div>
-
-                    <div style="overflow-x: auto;">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>No. CIF</th>
-                                    <th>Nama / NIK</th>
-                                    <th>Email / HP</th>
-                                    <th>Status</th>
-                                    <th>Aksi Teller / Supervisor</th>
-                                </tr>
-                            </thead>
-                            <tbody id="nasabahTableBody">
-                                <tr><td colspan="5" style="text-align: center;">Memuat data CIF...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- SCREEN 3: MODUL RC13 (Audit Trail History Log) -->
-                <div id="moduleRC13" class="module-section card">
-                    <div class="menu-banner">
-                        <span>MODUL AKTIF: <strong>[RC13] SYSTEM AUDIT TRAIL HISTORY LOGS (SUPERVISOR / ADMIN ONLY)</strong></span>
-                        <button onclick="executeMenuCommand('CLEAR')" style="background:none; border:none; color:var(--accent-blue); cursor:pointer;">[ Tutup Modul ]</button>
-                    </div>
-
-                    <div style="overflow-x: auto;">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Waktu (Timestamp)</th>
-                                    <th>CIF Target</th>
-                                    <th>Tipe Aksi</th>
-                                    <th>Detail Catatan Audit</th>
-                                    <th>User ID (Operator)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="fullHistoryTableBody">
-                                <tr><td colspan="5" style="text-align: center;">Memuat data audit trail...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- SCREEN 4: MODUL RC14 (CIF Maintenance - Update Profil) -->
-                <div id="moduleRC14" class="module-section card">
-                    <div class="menu-banner">
-                        <span>MODUL AKTIF: <strong>[RC14] PEMELIHARAAN DATA PROFIL NASABAH (CIF MAINTENANCE)</strong></span>
-                        <button onclick="executeMenuCommand('CLEAR')" style="background:none; border:none; color:var(--accent-blue); cursor:pointer;">[ Tutup Modul ]</button>
-                    </div>
-
-                    <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
-                        <input type="text" id="rc14SearchCif" placeholder="Masukkan Nomor CIF Nasabah (e.g. CIF202607260001)..." style="flex: 1;">
-                        <button onclick="loadCifForUpdate()" class="btn btn-gold">Load Data CIF</button>
-                    </div>
-
-                    <form id="updateForm" onsubmit="submitUpdateProfile(event)" style="display: none;">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Nomor CIF (Readonly)</label>
-                                <input type="text" id="updateCif" readonly style="opacity: 0.7; font-family: 'JetBrains Mono';">
-                            </div>
-                            <div class="form-group">
-                                <label>Nama Lengkap *</label>
-                                <input type="text" id="updateNamaLengkap" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group full" style="margin-bottom: 1rem;">
-                            <label>Alamat Lengkap *</label>
-                            <input type="text" id="updateAlamat" required>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Nomor HP *</label>
-                                <input type="text" id="updateNomorHp" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Email *</label>
-                                <input type="email" id="updateEmail" required>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Pekerjaan *</label>
-                                <input type="text" id="updatePekerjaan" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Penghasilan Bulanan (Rp) *</label>
-                                <input type="number" id="updatePenghasilanBulanan" required>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 0.5rem; justify-content: center; padding: 0.8rem; font-size: 1rem;">
-                            Simpan Perubahan Profile CIF & Catat Audit Log
-                        </button>
-                    </form>
                 </div>
 
             </div>
@@ -832,7 +587,7 @@
             <div id="sidebarDirectory" class="sidebar-directory">
                 <div class="sidebar-title">
                     <span>DIREKTORI KODE MENU</span>
-                    <span style="font-size:0.75rem; color:var(--text-muted);">v1.0</span>
+                    <span style="font-size:0.75rem; color:var(--text-muted);">v2.0 Modular</span>
                 </div>
 
                 <!-- KELOMPOK RC (REGISTRATION & CIF) -->
@@ -873,18 +628,25 @@
                     </div>
                 </div>
 
-                <!-- KELOMPOK DP (DEPOSIT & TABUNGAN) - FUTURE -->
+                <!-- KELOMPOK DP (DEPOSIT & TABUNGAN) -->
                 <div class="group-container">
                     <div class="group-header" onclick="toggleGroup('group-dp', this)">
                         <span style="color: var(--accent-gold);">KELOMPOK DP (DEPOSIT)</span>
                         <span class="arrow-icon">v</span>
                     </div>
-                    <div id="group-dp" class="group-content">
-                        <div class="menu-list-item" style="opacity: 0.6; cursor: not-allowed;">
+                    <div id="group-dp" class="group-content open">
+                        <div class="menu-list-item" onclick="executeMenuCommand('DP01')">
                             <span class="menu-code-tag tag-dp">DP01</span>
                             <div>
                                 <div class="menu-desc">Pembukaan Rekening</div>
-                                <div class="menu-subdesc">(Modul Mendatang)</div>
+                                <div class="menu-subdesc">Generasi No Rekening 10 Digit</div>
+                            </div>
+                        </div>
+                        <div class="menu-list-item" onclick="executeMenuCommand('DP02')">
+                            <span class="menu-code-tag tag-dp">DP02</span>
+                            <div>
+                                <div class="menu-desc">Over-The-Counter Transfer</div>
+                                <div class="menu-subdesc">Setor/Transfer @Transactional</div>
                             </div>
                         </div>
                     </div>
@@ -920,26 +682,52 @@
         </div>
     </div>
 
-    <!-- Modal Audit Trail Single CIF -->
+    <!-- MODAL 1: Audit Trail / Daftar Rekening CIF -->
     <div id="historyModal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color);">
-                <h3 style="color: var(--accent-purple);" id="modalTitle">Audit Trail History</h3>
+                <h3 style="color: var(--accent-purple);" id="modalTitle">Modal Details</h3>
                 <button onclick="closeModal()" class="btn" style="padding: 0.2rem 0.6rem;">Close</button>
             </div>
             <div style="overflow-x: auto;">
+                <table id="modalTable">
+                    <thead id="modalTableHead">
+                        <tr><th>Headers</th></tr>
+                    </thead>
+                    <tbody id="modalTableBody">
+                        <tr><td style="text-align: center;">Memuat data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: CIF LOOKUP SEARCH MODAL -->
+    <div id="cifLookupModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 650px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color);">
+                <h3 style="color: var(--accent-gold);">Pencarian CIF Nasabah Bank</h3>
+                <button onclick="closeCifLookupModal()" class="btn" style="padding: 0.2rem 0.6rem;">Close</button>
+            </div>
+            
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                <input type="text" id="lookupSearchKeyword" placeholder="Cari Nama, NIK, atau Nomor CIF..." style="flex: 1;" onkeyup="if(event.key==='Enter') executeCifLookupSearch()">
+                <button onclick="executeCifLookupSearch()" class="btn btn-gold">Cari Nasabah</button>
+            </div>
+
+            <div style="max-height: 350px; overflow-y: auto;">
                 <table>
                     <thead>
                         <tr>
-                            <th>Waktu</th>
-                            <th>CIF</th>
-                            <th>Aksi</th>
-                            <th>Detail Catatan Audit</th>
-                            <th>User ID</th>
+                            <th>No. CIF</th>
+                            <th>Nama Lengkap</th>
+                            <th>NIK</th>
+                            <th>Status</th>
+                            <th>Pilih</th>
                         </tr>
                     </thead>
-                    <tbody id="historyTableBody">
-                        <tr><td colspan="5" style="text-align: center;">Memuat data history...</td></tr>
+                    <tbody id="cifLookupTableBody">
+                        <tr><td colspan="5" style="text-align: center;">Ketik nama atau NIK untuk mencari CIF...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -947,8 +735,10 @@
     </div>
 
     <script>
-        // Global Auth State
+        // Global Auth & Navigation State
         let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let activeCifTargetInputId = null;
+        let currentActiveModule = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             if (currentUser) {
@@ -1023,11 +813,9 @@
             executeMenuCommand('CLEAR');
         }
 
-        // Collapsible Accordion Toggle Function
         function toggleGroup(contentId, headerElement) {
             const content = document.getElementById(contentId);
             const isOpen = content.classList.contains('open');
-            
             if (isOpen) {
                 content.classList.remove('open');
                 headerElement.classList.remove('open');
@@ -1037,14 +825,14 @@
             }
         }
 
-        // Teller Menu Router Controller
         function runMenuFromInput() {
             const input = document.getElementById('menuCodeInput').value.trim().toUpperCase();
             if (!input) return;
             executeMenuCommand(input);
         }
 
-        function executeMenuCommand(code, targetCif = null) {
+        // DYNAMIC MODULE LOADER ENGINE
+        async function executeMenuCommand(code, targetCif = null) {
             if (!currentUser) {
                 alert('Anda belum login! Silakan login terlebih dahulu.');
                 document.getElementById('loginOverlay').style.display = 'flex';
@@ -1062,54 +850,112 @@
 
             const mainLayout = document.getElementById('mainLayout');
             const sidebarDirectory = document.getElementById('sidebarDirectory');
+            const moduleContainer = document.getElementById('moduleContainer');
 
-            // Hide all modules & welcome screen
-            document.getElementById('welcomeScreen').style.display = 'none';
-            document.getElementById('moduleRC11').style.display = 'none';
-            document.getElementById('moduleRC12').style.display = 'none';
-            document.getElementById('moduleRC13').style.display = 'none';
-            document.getElementById('moduleRC14').style.display = 'none';
             document.getElementById('cifAlert').style.display = 'none';
 
-            if (code === 'RC11' || code === 'RC12' || code === 'RC13' || code === 'RC14') {
-                // HIDE SIDEBAR & EXPAND MODULE TO FULL WIDTH
+            if (['RC11', 'RC12', 'RC13', 'RC14', 'DP01', 'DP02'].includes(code)) {
                 sidebarDirectory.style.display = 'none';
                 mainLayout.classList.add('full-width');
+                document.getElementById('menuCodeInput').value = code;
 
-                if (code === 'RC11') {
-                    document.getElementById('moduleRC11').style.display = 'block';
-                    document.getElementById('menuCodeInput').value = 'RC11';
-                } else if (code === 'RC12') {
-                    document.getElementById('moduleRC12').style.display = 'block';
-                    document.getElementById('menuCodeInput').value = 'RC12';
-                    loadNasabah();
-                } else if (code === 'RC13') {
-                    document.getElementById('moduleRC13').style.display = 'block';
-                    document.getElementById('menuCodeInput').value = 'RC13';
-                    loadAllHistory();
-                } else if (code === 'RC14') {
-                    document.getElementById('moduleRC14').style.display = 'block';
-                    document.getElementById('menuCodeInput').value = 'RC14';
-                    if (targetCif) {
+                try {
+                    // DYNAMIC HTML FETCH BY GROUP SUBFOLDER & MENU CODE
+                    const group = code.substring(0, 2).toLowerCase(); // 'rc', 'dp', etc.
+                    const file = code.toLowerCase();                 // 'rc11', 'dp01', etc.
+                    const response = await fetch(`/modules/${group}/${file}.html`);
+                    if (!response.ok) throw new Error(`Modul HTML /modules/${group}/${file}.html tidak ditemukan`);
+                    
+                    const htmlContent = await response.text();
+                    moduleContainer.innerHTML = htmlContent;
+                    currentActiveModule = code;
+
+                    // INITIALIZE MODULE SPECIFIC LOGIC
+                    if (code === 'RC12') loadNasabah();
+                    else if (code === 'RC13') loadAllHistory();
+                    else if (code === 'RC14' && targetCif) {
                         document.getElementById('rc14SearchCif').value = targetCif;
                         loadCifForUpdate();
+                    } else if (code === 'DP01' && targetCif) {
+                        document.getElementById('dp01Cif').value = targetCif;
                     }
+                } catch (err) {
+                    alert('Gagal memuat modul HTML: ' + err.message);
                 }
             } else if (code === 'CLEAR' || code === 'MAIN' || code === 'EXIT') {
-                // SHOW SIDEBAR AGAIN & RETURN TO STANDBY
                 sidebarDirectory.style.display = 'block';
                 mainLayout.classList.remove('full-width');
+                document.getElementById('menuCodeInput').value = '';
+                currentActiveModule = null;
 
-                document.getElementById('welcomeScreen').style.display = 'block';
-                document.getElementById('menuCodeInput').value = '';
+                moduleContainer.innerHTML = `
+                    <div id="welcomeScreen" class="welcome-screen">
+                        <h2 style="margin-bottom: 0.5rem; text-align: center;">Core Banking Terminal System Standby</h2>
+                        <p style="color: var(--text-muted); text-align: center; max-width: 550px; margin: 0 auto 1rem auto; font-size: 0.95rem;">
+                            Sistem dalam posisi Standby. Ketik <strong>Kode Menu</strong> di kolom atas (contoh: <code style="color:var(--accent-gold);">RC11</code>, <code style="color:var(--accent-gold);">DP01</code>, <code style="color:var(--accent-gold);">DP02</code>) atau klik menu di direktori sebelah kanan.
+                        </p>
+                    </div>
+                `;
             } else {
-                alert(`Kode Menu '${code}' tidak ditemukan di sistem Core Banking!\n\nGunakan Kode Menu:\n- RC11 : Pendaftaran CIF Baru\n- RC12 : Inquiry Database CIF\n- RC13 : Audit Log History (Spv)\n- RC14 : Pemeliharaan Profil CIF`);
-                
-                sidebarDirectory.style.display = 'block';
-                mainLayout.classList.remove('full-width');
-                document.getElementById('welcomeScreen').style.display = 'block';
-                document.getElementById('menuCodeInput').value = '';
+                alert(`Kode Menu '${code}' tidak ditemukan di sistem Core Banking!\n\nGunakan Kode Menu:\n- RC11 : Pendaftaran CIF Baru\n- RC12 : Inquiry Database CIF\n- RC13 : Audit Log History (Spv)\n- RC14 : Pemeliharaan Profil CIF\n- DP01 : Pembukaan Rekening Baru\n- DP02 : Over-The-Counter Transfer`);
+                executeMenuCommand('CLEAR');
             }
+        }
+
+        // CIF LOOKUP MODAL FUNCTIONS
+        function openCifLookup(targetInputId) {
+            activeCifTargetInputId = targetInputId;
+            document.getElementById('lookupSearchKeyword').value = '';
+            document.getElementById('cifLookupModal').style.display = 'flex';
+            executeCifLookupSearch();
+        }
+
+        function closeCifLookupModal() {
+            document.getElementById('cifLookupModal').style.display = 'none';
+        }
+
+        async function executeCifLookupSearch() {
+            const kw = document.getElementById('lookupSearchKeyword').value.trim();
+            const tbody = document.getElementById('cifLookupTableBody');
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Mencari data CIF...</td></tr>';
+
+            try {
+                const url = kw ? `/api/nasabah/search?keyword=${encodeURIComponent(kw)}` : '/api/nasabah';
+                const res = await fetch(url);
+                const result = await res.json();
+
+                if (!result.data || result.data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Data nasabah tidak ditemukan.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = result.data.map(n => `
+                    <tr>
+                        <td><span class="cif-badge">${n.cif}</span></td>
+                        <td><strong>${n.namaLengkap}</strong></td>
+                        <td><small style="color:var(--text-muted);">${n.nik}</small></td>
+                        <td><span class="status-badge ${n.statusNasabah === 'AKTIF' ? 'status-aktif' : 'status-blocked'}">${n.statusNasabah}</span></td>
+                        <td>
+                            <button onclick="selectCifFromLookup('${n.cif}')" class="btn btn-gold" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">
+                                Pilih
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Gagal memuat data: ' + err + '</td></tr>';
+            }
+        }
+
+        function selectCifFromLookup(cif) {
+            if (activeCifTargetInputId) {
+                const el = document.getElementById(activeCifTargetInputId);
+                if (el) el.value = cif;
+                if (activeCifTargetInputId === 'rc14SearchCif') {
+                    loadCifForUpdate();
+                }
+            }
+            closeCifLookupModal();
         }
 
         async function loadNasabah() {
@@ -1138,6 +984,8 @@
 
         function renderTable(list) {
             const tbody = document.getElementById('nasabahTableBody');
+            if (!tbody) return;
+
             if (!list || list.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Data nasabah tidak ditemukan.</td></tr>';
                 return;
@@ -1152,11 +1000,14 @@
                     <td>${n.email}<br><small style="color:var(--text-muted);">${n.nomorHp}</small></td>
                     <td><span class="status-badge ${n.statusNasabah === 'AKTIF' ? 'status-aktif' : 'status-blocked'}">${n.statusNasabah}</span></td>
                     <td>
-                        <button onclick="executeMenuCommand('RC14', '${n.cif}')" class="btn btn-gold" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">
-                            Edit Profil
+                        <button onclick="executeMenuCommand('DP01', '${n.cif}')" class="btn btn-gold" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">
+                            Buka Rekening
                         </button>
-                        <button onclick="toggleStatus('${n.cif}', '${n.statusNasabah}')" class="btn" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">
-                            ${n.statusNasabah === 'AKTIF' ? 'Block' : 'Aktifkan'}
+                        <button onclick="showRekeningByCif('${n.cif}')" class="btn" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">
+                            Cek Saldo
+                        </button>
+                        <button onclick="executeMenuCommand('RC14', '${n.cif}')" class="btn" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; margin-top: 0.2rem;">
+                            Edit Profil
                         </button>
                         <button onclick="showHistory('${n.cif}')" class="btn btn-purple" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; margin-top: 0.2rem;" ${isTeller ? 'disabled title="Akses Spv Only" style="opacity:0.5; cursor:not-allowed;"' : ''}>
                             History
@@ -1208,7 +1059,7 @@
         async function loadCifForUpdate() {
             const cif = document.getElementById('rc14SearchCif').value.trim();
             if (!cif) {
-                alert('Silakan masukkan Nomor CIF!');
+                alert('Silakan masukkan atau cari Nomor CIF terlebih dahulu!');
                 return;
             }
 
@@ -1275,19 +1126,111 @@
             }
         }
 
-        async function toggleStatus(cif, currentStatus) {
-            const nextStatus = currentStatus === 'AKTIF' ? 'BLOCKED' : 'AKTIF';
-            
-            // Check Spv authorization for unblocking
-            if (nextStatus === 'AKTIF' && currentUser.role === 'TELLER') {
-                alert(`OTORISASI SUPERVISOR DIBUTUHKAN!\n\nTeller (${currentUser.username}) tidak diperbolehkan membuka blokir (Unblock) CIF secara langsung.\n\nMembutuhkan persetujuan Supervisor!`);
-                return;
-            }
+        async function submitCreateRekening(e) {
+            e.preventDefault();
+            const body = {
+                cif: document.getElementById('dp01Cif').value.trim(),
+                jenisTabungan: document.getElementById('dp01JenisTabungan').value,
+                setoranAwal: parseFloat(document.getElementById('dp01SetoranAwal').value)
+            };
 
-            const res = await fetch(`/api/nasabah/${cif}/status?status=${nextStatus}`, { method: 'PATCH' });
-            const result = await res.json();
-            document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-            loadNasabah();
+            try {
+                const res = await fetch('/api/rekening/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Operator-Id': currentUser ? currentUser.username : 'SYSTEM'
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                const result = await res.json();
+                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
+
+                if (result.status === 'SUCCESS') {
+                    document.getElementById('alertTitle').innerText = 'Pembukaan Rekening Berhasil!';
+                    document.getElementById('alertDesc').innerHTML = `Nomor Rekening 10 Digit Resmi: <span class="rek-badge" style="font-size:1.1rem;">${result.data.nomorRekening}</span> (Saldo: Rp ${result.data.saldo.toLocaleString('id-ID')})`;
+                    document.getElementById('cifAlert').style.display = 'block';
+                    document.getElementById('createRekeningForm').reset();
+                } else {
+                    alert(result.message || 'Pembukaan rekening gagal!');
+                }
+            } catch (err) {
+                alert('Gagal membuat rekening: ' + err);
+            }
+        }
+
+        async function submitTransfer(e) {
+            e.preventDefault();
+            const body = {
+                nomorRekeningAsal: document.getElementById('dp02RekAsal').value.trim(),
+                nomorRekeningTujuan: document.getElementById('dp02RekTujuan').value.trim(),
+                nominal: parseFloat(document.getElementById('dp02Nominal').value),
+                beritaTransfer: document.getElementById('dp02Berita').value
+            };
+
+            try {
+                const res = await fetch('/api/rekening/transfer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Operator-Id': currentUser ? currentUser.username : 'SYSTEM'
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                const result = await res.json();
+                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
+
+                if (result.status === 'SUCCESS') {
+                    document.getElementById('alertTitle').innerText = 'Transfer Berhasil!';
+                    document.getElementById('alertDesc').innerText = result.message;
+                    document.getElementById('cifAlert').style.display = 'block';
+                    document.getElementById('transferForm').reset();
+                } else {
+                    alert(result.message || 'Transfer gagal!');
+                }
+            } catch (err) {
+                alert('Gagal melakukan transfer: ' + err);
+            }
+        }
+
+        async function showRekeningByCif(cif) {
+            document.getElementById('modalTitle').innerText = `Daftar Rekening Tabungan: ${cif}`;
+            document.getElementById('modalTableHead').innerHTML = `
+                <tr>
+                    <th>No. Rekening</th>
+                    <th>Nama Nasabah</th>
+                    <th>Jenis Tabungan</th>
+                    <th>Saldo Current</th>
+                    <th>Status</th>
+                </tr>
+            `;
+            document.getElementById('historyModal').style.display = 'flex';
+
+            try {
+                const res = await fetch(`/api/rekening/cif/${cif}`);
+                const result = await res.json();
+                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
+
+                const tbody = document.getElementById('modalTableBody');
+                if (!result.data || result.data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">CIF ini belum memiliki Rekening Tabungan. Silakan buka di Modul DP01.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = result.data.map(r => `
+                    <tr>
+                        <td><span class="rek-badge">${r.nomorRekening}</span></td>
+                        <td><strong>${r.namaNasabah}</strong></td>
+                        <td>${r.jenisTabungan}</td>
+                        <td style="color:var(--accent-green); font-weight:700;">Rp ${r.saldo.toLocaleString('id-ID')}</td>
+                        <td><span class="status-badge status-aktif">${r.statusRekening}</span></td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                alert('Gagal mengambil daftar rekening: ' + err);
+            }
         }
 
         async function showHistory(cif) {
@@ -1297,6 +1240,15 @@
             }
 
             document.getElementById('modalTitle').innerText = `Audit Trail History: ${cif}`;
+            document.getElementById('modalTableHead').innerHTML = `
+                <tr>
+                    <th>Waktu</th>
+                    <th>CIF</th>
+                    <th>Aksi</th>
+                    <th>Detail Catatan Audit</th>
+                    <th>User ID</th>
+                </tr>
+            `;
             document.getElementById('historyModal').style.display = 'flex';
             try {
                 const res = await fetch(`/api/nasabah/${cif}/history`);
@@ -1321,6 +1273,8 @@
 
         function renderFullHistoryTable(list) {
             const tbody = document.getElementById('fullHistoryTableBody');
+            if (!tbody) return;
+
             if (!list || list.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Belum ada catatan history di sistem.</td></tr>';
                 return;
@@ -1337,7 +1291,9 @@
         }
 
         function renderModalHistoryTable(list) {
-            const tbody = document.getElementById('historyTableBody');
+            const tbody = document.getElementById('modalTableBody');
+            if (!tbody) return;
+
             if (!list || list.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Belum ada catatan history untuk nasabah ini.</td></tr>';
                 return;
