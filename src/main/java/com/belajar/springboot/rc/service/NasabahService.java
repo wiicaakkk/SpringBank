@@ -9,6 +9,8 @@ import com.belajar.springboot.rc.entity.StatusNasabah;
 import com.belajar.springboot.rc.repository.NasabahHistoryRepository;
 import com.belajar.springboot.rc.repository.NasabahRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,12 +75,15 @@ public class NasabahService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "nasabahCache", key = "#cif")
     public NasabahResponse getNasabahByCif(String cif) {
+        System.out.println("[DB-QUERY] Database Query dipanggil untuk CIF: " + cif);
         Nasabah nasabah = nasabahRepository.findByCif(cif)
                 .orElseThrow(() -> new RuntimeException("Nasabah dengan CIF " + cif + " tidak ditemukan!"));
         return mapToResponse(nasabah);
     }
 
+    @CacheEvict(value = "nasabahCache", key = "#cif")
     @Transactional
     public NasabahResponse updateNasabah(String cif, UpdateNasabahRequest request, String operatorId) {
         Nasabah nasabah = nasabahRepository.findByCif(cif)

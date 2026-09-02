@@ -34,6 +34,9 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private RekeningRepository rekeningRepository;
 
+    @Autowired
+    private com.belajar.springboot.dp.repository.TransaksiRepository transaksiRepository;
+
     @Override
     public void run(String... args) throws Exception {
         if (userRepository.count() == 0) {
@@ -110,6 +113,85 @@ public class DataInitializer implements CommandLineRunner {
                     .build());
 
             System.out.println("[INITIALIZER] Initial Nasabah (Budi Santoso & Siti Aminah) & Rekening Berhasil Seeded!");
+        }
+
+        if (transaksiRepository.count() == 0) {
+            String rek1 = "3436196555";
+            String rek2 = "8081350139";
+
+            // Jan 2025
+            transaksiRepository.save(com.belajar.springboot.dp.entity.Transaksi.builder()
+                    .nomorRekening(rek1)
+                    .tipeTransaksi(com.belajar.springboot.dp.entity.TipeTransaksi.KREDIT)
+                    .amount(new BigDecimal("5000000.00"))
+                    .deskripsi("Gaji Bulanan")
+                    .status("SUCCESS")
+                    .createdAt(java.time.LocalDateTime.of(2025, 1, 10, 10, 0))
+                    .build());
+            transaksiRepository.save(com.belajar.springboot.dp.entity.Transaksi.builder()
+                    .nomorRekening(rek1)
+                    .tipeTransaksi(com.belajar.springboot.dp.entity.TipeTransaksi.TOPUP_PULSA)
+                    .amount(new BigDecimal("100000.00"))
+                    .deskripsi("Pembelian Pulsa XL 100k")
+                    .status("SUCCESS")
+                    .createdAt(java.time.LocalDateTime.of(2025, 1, 15, 14, 30))
+                    .build());
+
+            // Feb 2025
+            transaksiRepository.save(com.belajar.springboot.dp.entity.Transaksi.builder()
+                    .nomorRekening(rek1)
+                    .tipeTransaksi(com.belajar.springboot.dp.entity.TipeTransaksi.PAKET_DATA)
+                    .amount(new BigDecimal("150000.00"))
+                    .deskripsi("Paket Data XL Xtra Combo 50GB")
+                    .status("SUCCESS")
+                    .createdAt(java.time.LocalDateTime.of(2025, 2, 5, 9, 15))
+                    .build());
+            transaksiRepository.save(com.belajar.springboot.dp.entity.Transaksi.builder()
+                    .nomorRekening(rek1)
+                    .tipeTransaksi(com.belajar.springboot.dp.entity.TipeTransaksi.DEBIT)
+                    .amount(new BigDecimal("500000.00"))
+                    .deskripsi("Transfer ke Rekening 8081350139")
+                    .status("SUCCESS")
+                    .createdAt(java.time.LocalDateTime.of(2025, 2, 14, 18, 20))
+                    .build());
+            transaksiRepository.save(com.belajar.springboot.dp.entity.Transaksi.builder()
+                    .nomorRekening(rek2)
+                    .tipeTransaksi(com.belajar.springboot.dp.entity.TipeTransaksi.KREDIT)
+                    .amount(new BigDecimal("500000.00"))
+                    .deskripsi("Terima Transfer dari 3436196555")
+                    .status("SUCCESS")
+                    .createdAt(java.time.LocalDateTime.of(2025, 2, 14, 18, 20))
+                    .build());
+
+            // Mar 2025
+            transaksiRepository.save(com.belajar.springboot.dp.entity.Transaksi.builder()
+                    .nomorRekening(rek1)
+                    .tipeTransaksi(com.belajar.springboot.dp.entity.TipeTransaksi.KREDIT)
+                    .amount(new BigDecimal("7500000.00"))
+                    .deskripsi("Bonus Project Backend")
+                    .status("SUCCESS")
+                    .createdAt(java.time.LocalDateTime.of(2025, 3, 1, 11, 0))
+                    .build());
+            transaksiRepository.save(com.belajar.springboot.dp.entity.Transaksi.builder()
+                    .nomorRekening(rek1)
+                    .tipeTransaksi(com.belajar.springboot.dp.entity.TipeTransaksi.PAYMENT)
+                    .amount(new BigDecimal("250000.00"))
+                    .deskripsi("Pembayaran Tagihan XL Prioritas")
+                    .status("SUCCESS")
+                    .createdAt(java.time.LocalDateTime.of(2025, 3, 20, 16, 45))
+                    .build());
+
+            // Apr 2025
+            transaksiRepository.save(com.belajar.springboot.dp.entity.Transaksi.builder()
+                    .nomorRekening(rek2)
+                    .tipeTransaksi(com.belajar.springboot.dp.entity.TipeTransaksi.TOPUP_PULSA)
+                    .amount(new BigDecimal("200000.00"))
+                    .deskripsi("Topup Pulsa XL Home")
+                    .status("SUCCESS")
+                    .createdAt(java.time.LocalDateTime.of(2025, 4, 10, 8, 30))
+                    .build());
+
+            System.out.println("[INITIALIZER] Initial Transaksi (Jan 2025 - Apr 2025) Berhasil Seeded!");
         }
     }
 }
