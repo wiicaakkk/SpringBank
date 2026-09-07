@@ -3,1315 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Core Banking Terminal System</title>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --bg-primary: #0a0f1d;
-            --bg-card: #131c31;
-            --bg-input: #1b2640;
-            --border-color: #2a3b63;
-            --text-main: #f0f4fc;
-            --text-muted: #8a99b5;
-            --accent-gold: #fbbf24;
-            --accent-blue: #3b82f6;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --accent-purple: #8b5cf6;
-            --glass: rgba(19, 28, 49, 0.75);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Outfit', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding: 1.5rem;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(251, 191, 36, 0.05) 0%, transparent 40%);
-        }
-
-        .container {
-            max-width: 1380px;
-            margin: 0 auto;
-        }
-
-        /* Banking Terminal Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .bank-brand {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .bank-logo {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--accent-gold), #b45309);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            color: #000;
-            font-size: 1.2rem;
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .user-badge {
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid var(--border-color);
-            padding: 0.4rem 0.8rem;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            font-size: 0.85rem;
-        }
-
-        .role-tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 0.15rem 0.4rem;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-        .role-teller { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); border: 1px solid var(--accent-blue); }
-        .role-supervisor { background: rgba(139, 92, 246, 0.2); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
-        .role-admin { background: rgba(251, 191, 36, 0.2); color: var(--accent-gold); border: 1px solid var(--accent-gold); }
-
-
-
-        .btn {
-            background-color: var(--bg-input);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 0.65rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.85rem;
-        }
-
-        .btn:hover {
-            border-color: var(--accent-blue);
-            background-color: #233152;
-            transform: translateY(-1px);
-        }
-
-        .btn-gold {
-            background: linear-gradient(135deg, var(--accent-gold), #d97706);
-            color: #000;
-            font-weight: 700;
-            border: none;
-        }
-
-        .btn-gold:hover {
-            opacity: 0.9;
-            background: linear-gradient(135deg, var(--accent-gold), #d97706);
-        }
-
-        .btn-purple {
-            background: linear-gradient(135deg, var(--accent-purple), #6d28d9);
-            color: #fff;
-            font-weight: 600;
-            border: none;
-        }
-
-        .btn-red {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--accent-red);
-            border: 1px solid var(--accent-red);
-        }
-
-        /* DYNAMIC MAIN LAYOUT */
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 1.5rem;
-            align-items: start;
-            transition: grid-template-columns 0.3s ease;
-        }
-
-        .main-layout.full-width {
-            grid-template-columns: 1fr !important;
-        }
-
-        @media (max-width: 1024px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .welcome-screen {
-            display: block;
-            padding: 3rem 2rem;
-            background: var(--glass);
-            border: 1px dashed var(--border-color);
-            border-radius: 16px;
-            text-align: center;
-        }
-
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        /* Right Sidebar Collapsible Accordion Directory */
-        .sidebar-directory {
-            background: var(--glass);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.2rem;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        .sidebar-title {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--accent-gold);
-            font-family: 'JetBrains Mono', monospace;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.6rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .group-container {
-            margin-bottom: 0.8rem;
-            border: 1px solid rgba(42, 59, 99, 0.5);
-            border-radius: 10px;
-            overflow: hidden;
-            background: rgba(13, 21, 38, 0.6);
-        }
-
-        .group-header {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--accent-blue);
-            padding: 0.75rem 0.9rem;
-            background: rgba(22, 34, 59, 0.8);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            user-select: none;
-            transition: background 0.2s;
-        }
-
-        .group-header:hover {
-            background: rgba(35, 49, 82, 0.9);
-        }
-
-        .group-header .arrow-icon {
-            font-size: 0.7rem;
-            transition: transform 0.3s ease;
-            color: var(--text-muted);
-        }
-
-        .group-header.open .arrow-icon {
-            transform: rotate(180deg);
-            color: var(--accent-gold);
-        }
-
-        .group-content {
-            display: none;
-            padding: 0.4rem 0.6rem;
-            border-top: 1px solid rgba(42, 59, 99, 0.4);
-            background: rgba(10, 15, 29, 0.4);
-        }
-
-        .group-content.open {
-            display: block;
-        }
-
-        .menu-list-item {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.5rem 0.6rem;
-            border-radius: 6px;
-            transition: background 0.2s;
-            margin-bottom: 0.2rem;
-            cursor: pointer;
-        }
-
-        .menu-list-item:hover {
-            background: rgba(42, 59, 99, 0.5);
-        }
-
-        .menu-code-tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 0.15rem 0.4rem;
-            border-radius: 4px;
-            min-width: 45px;
-            text-align: center;
-        }
-
-        .tag-rc { background: rgba(251, 191, 36, 0.15); color: var(--accent-gold); border: 1px solid rgba(251, 191, 36, 0.3); }
-        .tag-dp { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); border: 1px solid rgba(59, 130, 246, 0.3); }
-        .tag-nc { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
-
-        .menu-desc { font-size: 0.8rem; color: var(--text-main); }
-        .menu-subdesc { font-size: 0.7rem; color: var(--text-muted); }
-
-        /* Form & Table Styles */
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .form-group.full { grid-column: span 2; }
-
-        .input-lookup-group {
-            display: flex;
-            gap: 0.4rem;
-        }
-
-        .input-lookup-group input { flex: 1; }
-
-        label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        input, select, textarea {
-            background-color: var(--bg-input);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 0.65rem 0.9rem;
-            border-radius: 8px;
-            outline: none;
-            transition: border-color 0.2s;
-            font-size: 0.9rem;
-        }
-
-        input:focus, select:focus { border-color: var(--accent-blue); }
-
-        .cif-badge {
-            background-color: rgba(59, 130, 246, 0.15);
-            color: var(--accent-blue);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            padding: 0.25rem 0.6rem;
-            border-radius: 6px;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-
-        .rek-badge {
-            background-color: rgba(251, 191, 36, 0.15);
-            color: var(--accent-gold);
-            border: 1px solid rgba(251, 191, 36, 0.3);
-            padding: 0.25rem 0.6rem;
-            border-radius: 6px;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-
-        .status-badge {
-            padding: 0.2rem 0.5rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .status-aktif { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
-        .status-blocked { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.3); }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 0.5rem;
-        }
-
-        th, td {
-            padding: 0.75rem 0.9rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(42, 59, 99, 0.5);
-            font-size: 0.85rem;
-        }
-
-        th {
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
-        }
-
-        tr:hover td { background-color: rgba(27, 38, 64, 0.5); }
-
-        .search-box {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .search-box input { flex: 1; }
-
-        .alert-cif {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 78, 59, 0.4));
-            border: 1px solid var(--accent-green);
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            display: none;
-        }
-
-        .code-block {
-            background-color: #060913;
-            border: 1px solid var(--border-color);
-            padding: 0.8rem;
-            border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: #a5b4fc;
-            overflow-x: auto;
-            max-height: 140px;
-        }
-
-        .modal-overlay {
-            display: flex;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .login-card {
-            background: var(--bg-card);
-            border: 2px solid var(--accent-gold);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 440px;
-            padding: 2rem;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
-            text-align: center;
-        }
-
-        .quick-user-btn {
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            padding: 0.5rem 0.8rem;
-            border-radius: 8px;
-            color: var(--text-main);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .quick-user-btn:hover {
-            border-color: var(--accent-gold);
-            background: rgba(251, 191, 36, 0.1);
-        }
-
-        .modal-content {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            width: 90%;
-            max-width: 850px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 1.5rem;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-        }
-
-        .menu-banner {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.2rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--accent-blue);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-    </style>
+    <title>Core Banking System</title>
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
 </head>
 <body>
 
-    <!-- LOGIN OVERLAY MODAL -->
-    <div id="loginOverlay" class="modal-overlay">
-        <div class="login-card">
-            <div class="bank-logo" style="margin: 0 auto 1rem auto; width: 56px; height: 56px; font-size: 1.4rem;">BANK</div>
-            <h2 style="font-size: 1.4rem; margin-bottom: 0.3rem;">Core Banking Authentication</h2>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Silakan login dengan ID Operator & Password</p>
-
-            <form id="loginForm" onsubmit="submitLogin(event)">
-                <div class="form-group" style="margin-bottom: 1rem; text-align: left;">
-                    <label>Username / ID Operator *</label>
-                    <input type="text" id="loginUsername" required placeholder="e.g. teller1" style="width: 100%;">
+    <!-- ============ Jendela Login ============ -->
+    <div id="loginModal" class="cbs-window-mask" style="display:none">
+        <div class="cbs-window" role="dialog" aria-labelledby="loginTitle">
+            <div class="cbs-window-title" id="loginTitle">LOGIN OPERATOR CORE BANKING</div>
+            <div class="cbs-window-body">
+                <form onsubmit="cbLoginSubmit(event)">
+                    <div class="cbs-field" style="margin-bottom:8px">
+                        <label class="cbs-label req" for="loginUsername">User ID</label>
+                        <input type="text" id="loginUsername" autocomplete="username" maxlength="30">
+                    </div>
+                    <div class="cbs-field">
+                        <label class="cbs-label req" for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" autocomplete="current-password">
+                    </div>
+                    <div id="loginError" class="cbs-msg err" style="display:none; margin:10px 0 0"></div>
+                    <div class="cbs-btns" style="justify-content:flex-end">
+                        <button type="submit" class="cbs-btn cbs-btn-ok">Login</button>
+                    </div>
+                </form>
+                <div class="cbs-note" style="margin-top:10px">
+                    Akun demo yang tersedia sebagai data seeder sistem:
                 </div>
-                <div class="form-group" style="margin-bottom: 1.2rem; text-align: left;">
-                    <label>Password *</label>
-                    <input type="password" id="loginPassword" required placeholder="••••••••" style="width: 100%;">
-                </div>
-
-                <div id="loginError" style="color: var(--accent-red); font-size: 0.8rem; margin-bottom: 1rem; display: none;"></div>
-
-                <button type="submit" class="btn btn-gold" style="width: 100%; justify-content: center; padding: 0.75rem; font-size: 1rem; margin-bottom: 1.5rem;">
-                    Login ke Terminal
-                </button>
-            </form>
-
-            <div style="border-top: 1px dashed var(--border-color); padding-top: 1rem;">
-                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.6rem;">Akses Cepat Demo Accounts:</div>
-                <div style="display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap;">
-                    <button class="quick-user-btn" onclick="quickFill('teller1', 'password123')">Teller (teller1)</button>
-                    <button class="quick-user-btn" onclick="quickFill('spv1', 'password123')">Spv (spv1)</button>
-                    <button class="quick-user-btn" onclick="quickFill('admin1', 'password123')">Admin (admin1)</button>
+                <div class="cbs-btns">
+                    <button type="button" class="cbs-btn" onclick="cbQuickFill('teller1')">Teller : teller1</button>
+                    <button type="button" class="cbs-btn" onclick="cbQuickFill('spv1')">Spv : spv1</button>
+                    <button type="button" class="cbs-btn" onclick="cbQuickFill('admin1')">Admin : admin1</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN SYSTEM CONTAINER -->
-    <div class="container">
-        <header>
-            <div class="bank-brand">
-                <div class="bank-logo">BANK</div>
-                <div>
-                    <h1>Core Banking Terminal System</h1>
-                    <div class="subtitle">Multi-Module Teller, CIF & Rekening Deposit Platform</div>
-                </div>
+    <!-- ============ Shell Utama ============ -->
+    <div id="shellView" class="shell" style="display:none">
+        <div class="shell-top">
+            <div>
+                <span class="app-name">CORE BANKING SYSTEM</span>
+                <span class="app-sub">Registrasi Nasabah dan Rekening</span>
             </div>
-            
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <!-- COMPACT MINIMALIST KODE MENU INPUT -->
-                <div style="display: flex; align-items: center; gap: 0.4rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.25rem 0.5rem; border-radius: 10px;">
-                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent-gold); font-weight: 700;">MENU:</span>
-                    <input type="text" id="menuCodeInput" placeholder="DP01" maxlength="6" onkeyup="if(event.key==='Enter') runMenuFromInput()" style="width: 80px; font-family: 'JetBrains Mono', monospace; font-weight: 700; text-transform: uppercase; color: var(--accent-gold); background: #060913; border: 1px solid var(--accent-gold); padding: 0.3rem 0.5rem; border-radius: 6px; font-size: 0.85rem; text-align: center; outline: none;">
-                    <button onclick="runMenuFromInput()" class="btn btn-gold" style="padding: 0.3rem 0.6rem; font-size: 0.78rem;">Buka</button>
-                </div>
-
-                <!-- ACTIVE USER BADGE -->
-                <div id="userBadge" class="user-badge" style="display: none;">
-                    <div>
-                        <div style="font-weight: 700;" id="badgeNama">-</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);" id="badgeNip">-</div>
-                    </div>
-                    <span id="badgeRole" class="role-tag role-teller">TELLER</span>
-                </div>
-
-                <button onclick="doLogout()" id="logoutBtn" class="btn btn-red" style="display: none; padding: 0.35rem 0.6rem; font-size: 0.8rem;">Logout</button>
-                <button onclick="executeMenuCommand('CLEAR')" class="btn" style="padding: 0.35rem 0.6rem; font-size: 0.8rem;">Close Menu</button>
+            <div class="user-chip">
+                <span id="badgeNama">-</span> | NIP: <span id="badgeNip">-</span> |
+                Role: <span id="badgeRole">-</span>
+                <button type="button" class="cbs-btn" style="margin-left:10px"
+                    onclick="cbLogout()">Logout</button>
             </div>
-        </header>
-
-        <!-- Alert Notification -->
-        <div id="cifAlert" class="alert-cif">
-            <h4 style="color: var(--accent-green); margin-bottom: 0.3rem;" id="alertTitle">Pendaftaran Berhasil!</h4>
-            <div id="alertDesc">Nomor Respon: <span id="newCifNumber" class="cif-badge" style="font-size: 1rem;">-</span></div>
         </div>
 
-        <!-- DYNAMIC MAIN WORKSPACE -->
-        <div id="mainLayout" class="main-layout">
-            
-            <!-- LEFT COLUMN: DYNAMICALLY INJECTED MODULE WORKSPACE -->
-            <div class="left-workspace" id="moduleContainer">
-                
-                <!-- STANDBY DEFAULT SCREEN -->
-                <div id="welcomeScreen" class="welcome-screen">
-                    <h2 style="margin-bottom: 0.5rem; text-align: center;">Core Banking Terminal System Standby</h2>
-                    <p style="color: var(--text-muted); text-align: center; max-width: 550px; margin: 0 auto 1rem auto; font-size: 0.95rem;">
-                        Sistem dalam posisi Standby. Ketik <strong>Kode Menu</strong> di kolom atas (contoh: <code style="color:var(--accent-gold);">RC11</code>, <code style="color:var(--accent-gold);">DP01</code>, <code style="color:var(--accent-gold);">DP02</code>) atau klik menu di direktori sebelah kanan.
-                    </p>
-                </div>
-
-            </div>
-
-            <!-- RIGHT COLUMN: COLLAPSIBLE MENU DIRECTORY SIDEBAR -->
-            <div id="sidebarDirectory" class="sidebar-directory">
-                <div class="sidebar-title">
-                    <span>DIREKTORI KODE MENU</span>
-                    <span style="font-size:0.75rem; color:var(--text-muted);">v2.0 Modular</span>
-                </div>
-
-                <!-- KELOMPOK RC (REGISTRATION & CIF) -->
-                <div class="group-container">
-                    <div class="group-header" onclick="toggleGroup('group-rc', this)">
-                        <span>KELOMPOK RC (REGISTRASI)</span>
-                        <span class="arrow-icon">v</span>
+        <div class="shell-body">
+            <nav class="shell-menu" aria-label="Menu modul">
+                <div class="menu-group">
+                    <div class="menu-group-head" onclick="cbToggleGroup('grpRC', this)" tabindex="0"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){cbToggleGroup('grpRC', this);event.preventDefault()}">
+                        <span class="glyph">[-]</span> NASABAH / CIF
                     </div>
-                    <div id="group-rc" class="group-content open">
-                        <div class="menu-list-item" onclick="executeMenuCommand('RC11')">
-                            <span class="menu-code-tag tag-rc">RC11</span>
-                            <div>
-                                <div class="menu-desc">Pendaftaran CIF Baru</div>
-                                <div class="menu-subdesc">Registrasi & generator CIF</div>
-                            </div>
-                        </div>
-                        <div class="menu-list-item" onclick="executeMenuCommand('RC12')">
-                            <span class="menu-code-tag tag-rc">RC12</span>
-                            <div>
-                                <div class="menu-desc">Inquiry Database CIF</div>
-                                <div class="menu-subdesc">Cari & update status nasabah</div>
-                            </div>
-                        </div>
-                        <div class="menu-list-item" onclick="executeMenuCommand('RC13')">
-                            <span class="menu-code-tag tag-rc">RC13</span>
-                            <div>
-                                <div class="menu-desc">Audit Trail History</div>
-                                <div class="menu-subdesc">Log riwayat transaksi (Spv Only)</div>
-                            </div>
-                        </div>
-                        <div class="menu-list-item" onclick="executeMenuCommand('RC14')">
-                            <span class="menu-code-tag tag-rc">RC14</span>
-                            <div>
-                                <div class="menu-desc">Pemeliharaan Profil CIF</div>
-                                <div class="menu-subdesc">Update data nasabah & audit log</div>
-                            </div>
-                        </div>
+                    <div class="menu-items" id="grpRC">
+                        <button type="button" class="menu-item" onclick="cbMenu('RC11')">
+                            <span class="txcd">RC11</span>Registrasi Nasabah
+                        </button>
+                        <button type="button" class="menu-item" onclick="cbMenu('RC12')">
+                            <span class="txcd">RC12</span>Inquiry Database CIF
+                        </button>
+                        <button type="button" class="menu-item" onclick="cbMenu('RC13')">
+                            <span class="txcd">RC13</span>Audit Trail Log (Spv)
+                        </button>
+                        <button type="button" class="menu-item" onclick="cbMenu('RC14')">
+                            <span class="txcd">RC14</span>Pemeliharaan CIF
+                        </button>
                     </div>
                 </div>
 
-                <!-- KELOMPOK DP (DEPOSIT & TABUNGAN) -->
-                <div class="group-container">
-                    <div class="group-header" onclick="toggleGroup('group-dp', this)">
-                        <span style="color: var(--accent-gold);">KELOMPOK DP (DEPOSIT)</span>
-                        <span class="arrow-icon">v</span>
+                <div class="menu-group">
+                    <div class="menu-group-head" onclick="cbToggleGroup('grpDP', this)" tabindex="0"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){cbToggleGroup('grpDP', this);event.preventDefault()}">
+                        <span class="glyph">[-]</span> REKENING / DANA
                     </div>
-                    <div id="group-dp" class="group-content open">
-                        <div class="menu-list-item" onclick="executeMenuCommand('DP01')">
-                            <span class="menu-code-tag tag-dp">DP01</span>
-                            <div>
-                                <div class="menu-desc">Pembukaan Rekening</div>
-                                <div class="menu-subdesc">Generasi No Rekening 10 Digit</div>
-                            </div>
-                        </div>
-                        <div class="menu-list-item" onclick="executeMenuCommand('DP02')">
-                            <span class="menu-code-tag tag-dp">DP02</span>
-                            <div>
-                                <div class="menu-desc">Over-The-Counter Transfer</div>
-                                <div class="menu-subdesc">Setor/Transfer @Transactional</div>
-                            </div>
-                        </div>
+                    <div class="menu-items" id="grpDP">
+                        <button type="button" class="menu-item" onclick="cbMenu('DP01')">
+                            <span class="txcd">DP01</span>Buka Rekening Tabungan
+                        </button>
+                        <button type="button" class="menu-item" onclick="cbMenu('DP02')">
+                            <span class="txcd">DP02</span>Transfer Antar Rekening
+                        </button>
                     </div>
                 </div>
 
-                <!-- KELOMPOK NC (NERACA & GENERAL LEDGER) - FUTURE -->
-                <div class="group-container">
-                    <div class="group-header" onclick="toggleGroup('group-nc', this)">
-                        <span style="color: var(--accent-green);">KELOMPOK NC (NERACA & GL)</span>
-                        <span class="arrow-icon">v</span>
+                <div class="menu-group">
+                    <div class="menu-group-head" onclick="cbToggleGroup('grpUT', this)" tabindex="0"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){cbToggleGroup('grpUT', this);event.preventDefault()}">
+                        <span class="glyph">[-]</span> UTILITAS
                     </div>
-                    <div id="group-nc" class="group-content">
-                        <div class="menu-list-item" style="opacity: 0.6; cursor: not-allowed;">
-                            <span class="menu-code-tag tag-nc">NC01</span>
-                            <div>
-                                <div class="menu-desc">Laporan Neraca Harian</div>
-                                <div class="menu-subdesc">(Modul Mendatang)</div>
-                            </div>
-                        </div>
+                    <div class="menu-items" id="grpUT">
+                        <button type="button" class="menu-item" onclick="cbLogout()">
+                            Logout / Ganti Operator
+                        </button>
                     </div>
                 </div>
 
-            </div>
+                <div class="cbs-note" style="margin-top:10px">
+                    Pakai tombol menu, atau tulis kode layar pada modul aktif. RC13 dibatasi Supervisor / Admin.
+                </div>
+            </nav>
 
+            <main class="shell-main">
+                <div id="shellMsg" class="cbs-msg"></div>
+                <div id="moduleContainer"></div>
+            </main>
         </div>
 
-        <!-- REST API Response Inspector -->
-        <div style="margin-top: 1.5rem;" class="card">
-            <div class="card-title" style="font-size: 0.85rem; margin-bottom: 0.5rem; color: var(--text-muted);">
-                REST API Debugger Inspector
+        <div class="shell-status">
+            <div>
+                Operator: <span id="badgeNama2">-</span>
+                <span id="shellMsgStatus" class="cbs-msg" style="display:none; margin-left:10px"></span>
             </div>
-            <pre class="code-block" id="jsonOutput">// Log respon JSON dari server Spring Boot akan muncul di sini</pre>
-        </div>
-    </div>
-
-    <!-- MODAL 1: Audit Trail / Daftar Rekening CIF -->
-    <div id="historyModal" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color);">
-                <h3 style="color: var(--accent-purple);" id="modalTitle">Modal Details</h3>
-                <button onclick="closeModal()" class="btn" style="padding: 0.2rem 0.6rem;">Close</button>
-            </div>
-            <div style="overflow-x: auto;">
-                <table id="modalTable">
-                    <thead id="modalTableHead">
-                        <tr><th>Headers</th></tr>
-                    </thead>
-                    <tbody id="modalTableBody">
-                        <tr><td style="text-align: center;">Memuat data...</td></tr>
-                    </tbody>
-                </table>
+            <div>
+                Process Date: <span id="procDate">-</span>
+                &nbsp;|&nbsp; Server Time: <span id="statusClock">-</span>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: CIF LOOKUP SEARCH MODAL -->
-    <div id="cifLookupModal" class="modal-overlay" style="display: none;">
-        <div class="modal-content" style="max-width: 650px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color);">
-                <h3 style="color: var(--accent-gold);">Pencarian CIF Nasabah Bank</h3>
-                <button onclick="closeCifLookupModal()" class="btn" style="padding: 0.2rem 0.6rem;">Close</button>
+    <!-- ============ Jendela Pencarian CIF ============ -->
+    <div id="lookupModal" class="cbs-window-mask" style="display:none" role="dialog" aria-labelledby="lookupTitle">
+        <div class="cbs-window">
+            <div class="cbs-window-title" id="lookupTitle">
+                <span>CARI NOMOR CIF</span>
+                <button type="button" class="cbs-window-close" onclick="cbLookupClose()" aria-label="Tutup">X</button>
             </div>
-            
-            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-                <input type="text" id="lookupSearchKeyword" placeholder="Cari Nama, NIK, atau Nomor CIF..." style="flex: 1;" onkeyup="if(event.key==='Enter') executeCifLookupSearch()">
-                <button onclick="executeCifLookupSearch()" class="btn btn-gold">Cari Nasabah</button>
-            </div>
-
-            <div style="max-height: 350px; overflow-y: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>No. CIF</th>
-                            <th>Nama Lengkap</th>
-                            <th>NIK</th>
-                            <th>Status</th>
-                            <th>Pilih</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cifLookupTableBody">
-                        <tr><td colspan="5" style="text-align: center;">Ketik nama atau NIK untuk mencari CIF...</td></tr>
-                    </tbody>
-                </table>
+            <div class="cbs-window-body">
+                <div class="cbs-field" style="margin-bottom:8px">
+                    <label class="cbs-label" for="lookupSearchKeyword">Kata kunci</label>
+                    <input type="text" id="lookupSearchKeyword"
+                        onkeyup="if(event.key==='Enter')cbLookupSearch()">
+                </div>
+                <div class="cbs-btns" style="justify-content:flex-end">
+                    <button type="button" class="cbs-btn cbs-btn-ok" onclick="cbLookupSearch()">Cari</button>
+                </div>
+                <div id="lookupResultBox" style="margin-top:8px; overflow:auto; max-height:40vh"></div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Global Auth & Navigation State
-        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-        let activeCifTargetInputId = null;
-        let currentActiveModule = null;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            if (currentUser) {
-                applyUserSession(currentUser);
-            } else {
-                document.getElementById('loginOverlay').style.display = 'flex';
-            }
-        });
-
-        function quickFill(user, pass) {
-            document.getElementById('loginUsername').value = user;
-            document.getElementById('loginPassword').value = pass;
-        }
-
-        async function submitLogin(e) {
-            e.preventDefault();
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-            const errorDiv = document.getElementById('loginError');
-
-            errorDiv.style.display = 'none';
-
-            try {
-                const res = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
-
-                const result = await res.json();
-                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-
-                if (result.status === 'SUCCESS') {
-                    currentUser = result.data;
-                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    applyUserSession(currentUser);
-                    document.getElementById('loginOverlay').style.display = 'none';
-                    document.getElementById('loginForm').reset();
-                } else {
-                    errorDiv.innerText = result.message || 'Login gagal!';
-                    errorDiv.style.display = 'block';
-                }
-            } catch (err) {
-                errorDiv.innerText = 'Gagal terhubung ke server: ' + err;
-                errorDiv.style.display = 'block';
-            }
-        }
-
-        function applyUserSession(user) {
-            document.getElementById('badgeNama').innerText = user.namaLengkap;
-            document.getElementById('badgeNip').innerText = `${user.nip} (${user.username})`;
-            
-            const badgeRole = document.getElementById('badgeRole');
-            badgeRole.innerText = user.role;
-            badgeRole.className = `role-tag role-${user.role.toLowerCase()}`;
-
-            document.getElementById('userBadge').style.display = 'flex';
-            document.getElementById('logoutBtn').style.display = 'inline-flex';
-            document.getElementById('loginOverlay').style.display = 'none';
-        }
-
-        async function doLogout() {
-            try {
-                await fetch('/api/auth/logout', { method: 'POST' });
-            } catch (e) {}
-            
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            document.getElementById('userBadge').style.display = 'none';
-            document.getElementById('logoutBtn').style.display = 'none';
-            document.getElementById('loginOverlay').style.display = 'flex';
-            executeMenuCommand('CLEAR');
-        }
-
-        function toggleGroup(contentId, headerElement) {
-            const content = document.getElementById(contentId);
-            const isOpen = content.classList.contains('open');
-            if (isOpen) {
-                content.classList.remove('open');
-                headerElement.classList.remove('open');
-            } else {
-                content.classList.add('open');
-                headerElement.classList.add('open');
-            }
-        }
-
-        function runMenuFromInput() {
-            const input = document.getElementById('menuCodeInput').value.trim().toUpperCase();
-            if (!input) return;
-            executeMenuCommand(input);
-        }
-
-        // DYNAMIC MODULE LOADER ENGINE
-        async function executeMenuCommand(code, targetCif = null) {
-            if (!currentUser) {
-                alert('Anda belum login! Silakan login terlebih dahulu.');
-                document.getElementById('loginOverlay').style.display = 'flex';
-                return;
-            }
-
-            code = code.toUpperCase();
-
-            // Role-based Access Control Check
-            if (code === 'RC13' && currentUser.role === 'TELLER') {
-                alert(`AKSES DITOLAK!\n\nUser '${currentUser.username}' ber-role TELLER tidak memiliki otorisasi untuk membuka Audit Trail History (RC13).\n\nModul ini khusus untuk SUPERVISOR atau ADMIN.`);
-                document.getElementById('menuCodeInput').value = '';
-                return;
-            }
-
-            const mainLayout = document.getElementById('mainLayout');
-            const sidebarDirectory = document.getElementById('sidebarDirectory');
-            const moduleContainer = document.getElementById('moduleContainer');
-
-            document.getElementById('cifAlert').style.display = 'none';
-
-            if (['RC11', 'RC12', 'RC13', 'RC14', 'DP01', 'DP02'].includes(code)) {
-                sidebarDirectory.style.display = 'none';
-                mainLayout.classList.add('full-width');
-                document.getElementById('menuCodeInput').value = code;
-
-                try {
-                    // DYNAMIC HTML FETCH BY GROUP SUBFOLDER & MENU CODE
-                    const group = code.substring(0, 2).toLowerCase(); // 'rc', 'dp', etc.
-                    const file = code.toLowerCase();                 // 'rc11', 'dp01', etc.
-                    const response = await fetch(`/modules/${group}/${file}.html`);
-                    if (!response.ok) throw new Error(`Modul HTML /modules/${group}/${file}.html tidak ditemukan`);
-                    
-                    const htmlContent = await response.text();
-                    moduleContainer.innerHTML = htmlContent;
-                    currentActiveModule = code;
-
-                    // INITIALIZE MODULE SPECIFIC LOGIC
-                    if (code === 'RC12') loadNasabah();
-                    else if (code === 'RC13') loadAllHistory();
-                    else if (code === 'RC14' && targetCif) {
-                        document.getElementById('rc14SearchCif').value = targetCif;
-                        loadCifForUpdate();
-                    } else if (code === 'DP01' && targetCif) {
-                        document.getElementById('dp01Cif').value = targetCif;
-                    }
-                } catch (err) {
-                    alert('Gagal memuat modul HTML: ' + err.message);
-                }
-            } else if (code === 'CLEAR' || code === 'MAIN' || code === 'EXIT') {
-                sidebarDirectory.style.display = 'block';
-                mainLayout.classList.remove('full-width');
-                document.getElementById('menuCodeInput').value = '';
-                currentActiveModule = null;
-
-                moduleContainer.innerHTML = `
-                    <div id="welcomeScreen" class="welcome-screen">
-                        <h2 style="margin-bottom: 0.5rem; text-align: center;">Core Banking Terminal System Standby</h2>
-                        <p style="color: var(--text-muted); text-align: center; max-width: 550px; margin: 0 auto 1rem auto; font-size: 0.95rem;">
-                            Sistem dalam posisi Standby. Ketik <strong>Kode Menu</strong> di kolom atas (contoh: <code style="color:var(--accent-gold);">RC11</code>, <code style="color:var(--accent-gold);">DP01</code>, <code style="color:var(--accent-gold);">DP02</code>) atau klik menu di direktori sebelah kanan.
-                        </p>
-                    </div>
-                `;
-            } else {
-                alert(`Kode Menu '${code}' tidak ditemukan di sistem Core Banking!\n\nGunakan Kode Menu:\n- RC11 : Pendaftaran CIF Baru\n- RC12 : Inquiry Database CIF\n- RC13 : Audit Log History (Spv)\n- RC14 : Pemeliharaan Profil CIF\n- DP01 : Pembukaan Rekening Baru\n- DP02 : Over-The-Counter Transfer`);
-                executeMenuCommand('CLEAR');
-            }
-        }
-
-        // CIF LOOKUP MODAL FUNCTIONS
-        function openCifLookup(targetInputId) {
-            activeCifTargetInputId = targetInputId;
-            document.getElementById('lookupSearchKeyword').value = '';
-            document.getElementById('cifLookupModal').style.display = 'flex';
-            executeCifLookupSearch();
-        }
-
-        function closeCifLookupModal() {
-            document.getElementById('cifLookupModal').style.display = 'none';
-        }
-
-        async function executeCifLookupSearch() {
-            const kw = document.getElementById('lookupSearchKeyword').value.trim();
-            const tbody = document.getElementById('cifLookupTableBody');
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Mencari data CIF...</td></tr>';
-
-            try {
-                const url = kw ? `/api/nasabah/search?keyword=${encodeURIComponent(kw)}` : '/api/nasabah';
-                const res = await fetch(url);
-                const result = await res.json();
-
-                if (!result.data || result.data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Data nasabah tidak ditemukan.</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = result.data.map(n => `
-                    <tr>
-                        <td><span class="cif-badge">${n.cif}</span></td>
-                        <td><strong>${n.namaLengkap}</strong></td>
-                        <td><small style="color:var(--text-muted);">${n.nik}</small></td>
-                        <td><span class="status-badge ${n.statusNasabah === 'AKTIF' ? 'status-aktif' : 'status-blocked'}">${n.statusNasabah}</span></td>
-                        <td>
-                            <button onclick="selectCifFromLookup('${n.cif}')" class="btn btn-gold" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">
-                                Pilih
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            } catch (err) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Gagal memuat data: ' + err + '</td></tr>';
-            }
-        }
-
-        function selectCifFromLookup(cif) {
-            if (activeCifTargetInputId) {
-                const el = document.getElementById(activeCifTargetInputId);
-                if (el) el.value = cif;
-                if (activeCifTargetInputId === 'rc14SearchCif') {
-                    loadCifForUpdate();
-                }
-            }
-            closeCifLookupModal();
-        }
-
-        async function loadNasabah() {
-            try {
-                const res = await fetch('/api/nasabah');
-                const result = await res.json();
-                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-                renderTable(result.data);
-            } catch (err) {
-                document.getElementById('jsonOutput').innerText = 'Error: ' + err;
-            }
-        }
-
-        async function doSearch() {
-            const kw = document.getElementById('searchKeyword').value;
-            if (!kw) return loadNasabah();
-            try {
-                const res = await fetch('/api/nasabah/search?keyword=' + encodeURIComponent(kw));
-                const result = await res.json();
-                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-                renderTable(result.data);
-            } catch (err) {
-                document.getElementById('jsonOutput').innerText = 'Error: ' + err;
-            }
-        }
-
-        function renderTable(list) {
-            const tbody = document.getElementById('nasabahTableBody');
-            if (!tbody) return;
-
-            if (!list || list.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Data nasabah tidak ditemukan.</td></tr>';
-                return;
-            }
-
-            const isTeller = currentUser && currentUser.role === 'TELLER';
-
-            tbody.innerHTML = list.map(n => `
-                <tr>
-                    <td><span class="cif-badge">${n.cif}</span></td>
-                    <td><strong>${n.namaLengkap}</strong><br><small style="color:var(--text-muted);">${n.nik}</small></td>
-                    <td>${n.email}<br><small style="color:var(--text-muted);">${n.nomorHp}</small></td>
-                    <td><span class="status-badge ${n.statusNasabah === 'AKTIF' ? 'status-aktif' : 'status-blocked'}">${n.statusNasabah}</span></td>
-                    <td>
-                        <button onclick="executeMenuCommand('DP01', '${n.cif}')" class="btn btn-gold" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">
-                            Buka Rekening
-                        </button>
-                        <button onclick="showRekeningByCif('${n.cif}')" class="btn" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">
-                            Cek Saldo
-                        </button>
-                        <button onclick="executeMenuCommand('RC14', '${n.cif}')" class="btn" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; margin-top: 0.2rem;">
-                            Edit Profil
-                        </button>
-                        <button onclick="showHistory('${n.cif}')" class="btn btn-purple" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; margin-top: 0.2rem;" ${isTeller ? 'disabled title="Akses Spv Only" style="opacity:0.5; cursor:not-allowed;"' : ''}>
-                            History
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        async function submitRegistration(e) {
-            e.preventDefault();
-            const body = {
-                nik: document.getElementById('nik').value,
-                namaLengkap: document.getElementById('namaLengkap').value,
-                tempatLahir: document.getElementById('tempatLahir').value,
-                tanggalLahir: document.getElementById('tanggalLahir').value,
-                jenisKelamin: document.getElementById('jenisKelamin').value,
-                ibuKandung: document.getElementById('ibuKandung').value,
-                alamat: document.getElementById('alamat').value,
-                nomorHp: document.getElementById('nomorHp').value,
-                email: document.getElementById('email').value,
-                pekerjaan: document.getElementById('pekerjaan').value,
-                penghasilanBulanan: parseFloat(document.getElementById('penghasilanBulanan').value)
-            };
-
-            const res = await fetch('/api/nasabah/register', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'X-Operator-Id': currentUser ? currentUser.username : 'SYSTEM'
-                },
-                body: JSON.stringify(body)
-            });
-            const result = await res.json();
-            document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-
-            if (result.status === 'SUCCESS') {
-                document.getElementById('alertTitle').innerText = 'Pendaftaran Nasabah Berhasil!';
-                document.getElementById('alertDesc').innerHTML = `Nomor CIF Resmi: <span class="cif-badge" style="font-size:1rem;">${result.data.cif}</span>`;
-                document.getElementById('cifAlert').style.display = 'block';
-                document.getElementById('registerForm').reset();
-                
-                setTimeout(() => executeMenuCommand('RC12'), 1500);
-            } else {
-                alert(result.message || 'Pendaftaran gagal!');
-            }
-        }
-
-        async function loadCifForUpdate() {
-            const cif = document.getElementById('rc14SearchCif').value.trim();
-            if (!cif) {
-                alert('Silakan masukkan atau cari Nomor CIF terlebih dahulu!');
-                return;
-            }
-
-            try {
-                const res = await fetch(`/api/nasabah/${cif}`);
-                const result = await res.json();
-                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-
-                if (result.status === 'SUCCESS' && result.data) {
-                    const d = result.data;
-                    document.getElementById('updateCif').value = d.cif;
-                    document.getElementById('updateNamaLengkap').value = d.namaLengkap;
-                    document.getElementById('updateAlamat').value = d.alamat;
-                    document.getElementById('updateNomorHp').value = d.nomorHp;
-                    document.getElementById('updateEmail').value = d.email;
-                    document.getElementById('updatePekerjaan').value = d.pekerjaan;
-                    document.getElementById('updatePenghasilanBulanan').value = d.penghasilanBulanan;
-                    
-                    document.getElementById('updateForm').style.display = 'block';
-                } else {
-                    alert('Data Nasabah dengan CIF tersebut tidak ditemukan!');
-                    document.getElementById('updateForm').style.display = 'none';
-                }
-            } catch (err) {
-                alert('Gagal mengambil data CIF: ' + err);
-            }
-        }
-
-        async function submitUpdateProfile(e) {
-            e.preventDefault();
-            const cif = document.getElementById('updateCif').value;
-            const body = {
-                namaLengkap: document.getElementById('updateNamaLengkap').value,
-                alamat: document.getElementById('updateAlamat').value,
-                nomorHp: document.getElementById('updateNomorHp').value,
-                email: document.getElementById('updateEmail').value,
-                pekerjaan: document.getElementById('updatePekerjaan').value,
-                penghasilanBulanan: parseFloat(document.getElementById('updatePenghasilanBulanan').value)
-            };
-
-            try {
-                const res = await fetch(`/api/nasabah/${cif}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Operator-Id': currentUser ? currentUser.username : 'SYSTEM'
-                    },
-                    body: JSON.stringify(body)
-                });
-                const result = await res.json();
-                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-
-                if (result.status === 'SUCCESS') {
-                    document.getElementById('alertTitle').innerText = 'Pembaruan Profil CIF Berhasil!';
-                    document.getElementById('alertDesc').innerText = `Data profil CIF ${cif} berhasil diperbarui oleh ${currentUser ? currentUser.username : 'SYSTEM'}`;
-                    document.getElementById('cifAlert').style.display = 'block';
-
-                    setTimeout(() => executeMenuCommand('RC12'), 1500);
-                } else {
-                    alert(result.message || 'Pembaruan profil gagal!');
-                }
-            } catch (err) {
-                alert('Gagal memperbarui data: ' + err);
-            }
-        }
-
-        async function submitCreateRekening(e) {
-            e.preventDefault();
-            const body = {
-                cif: document.getElementById('dp01Cif').value.trim(),
-                jenisTabungan: document.getElementById('dp01JenisTabungan').value,
-                setoranAwal: parseFloat(document.getElementById('dp01SetoranAwal').value)
-            };
-
-            try {
-                const res = await fetch('/api/rekening/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Operator-Id': currentUser ? currentUser.username : 'SYSTEM'
-                    },
-                    body: JSON.stringify(body)
-                });
-
-                const result = await res.json();
-                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-
-                if (result.status === 'SUCCESS') {
-                    document.getElementById('alertTitle').innerText = 'Pembukaan Rekening Berhasil!';
-                    document.getElementById('alertDesc').innerHTML = `Nomor Rekening 10 Digit Resmi: <span class="rek-badge" style="font-size:1.1rem;">${result.data.nomorRekening}</span> (Saldo: Rp ${result.data.saldo.toLocaleString('id-ID')})`;
-                    document.getElementById('cifAlert').style.display = 'block';
-                    document.getElementById('createRekeningForm').reset();
-                } else {
-                    alert(result.message || 'Pembukaan rekening gagal!');
-                }
-            } catch (err) {
-                alert('Gagal membuat rekening: ' + err);
-            }
-        }
-
-        async function submitTransfer(e) {
-            e.preventDefault();
-            const body = {
-                nomorRekeningAsal: document.getElementById('dp02RekAsal').value.trim(),
-                nomorRekeningTujuan: document.getElementById('dp02RekTujuan').value.trim(),
-                nominal: parseFloat(document.getElementById('dp02Nominal').value),
-                beritaTransfer: document.getElementById('dp02Berita').value
-            };
-
-            try {
-                const res = await fetch('/api/rekening/transfer', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Operator-Id': currentUser ? currentUser.username : 'SYSTEM'
-                    },
-                    body: JSON.stringify(body)
-                });
-
-                const result = await res.json();
-                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-
-                if (result.status === 'SUCCESS') {
-                    document.getElementById('alertTitle').innerText = 'Transfer Berhasil!';
-                    document.getElementById('alertDesc').innerText = result.message;
-                    document.getElementById('cifAlert').style.display = 'block';
-                    document.getElementById('transferForm').reset();
-                } else {
-                    alert(result.message || 'Transfer gagal!');
-                }
-            } catch (err) {
-                alert('Gagal melakukan transfer: ' + err);
-            }
-        }
-
-        async function showRekeningByCif(cif) {
-            document.getElementById('modalTitle').innerText = `Daftar Rekening Tabungan: ${cif}`;
-            document.getElementById('modalTableHead').innerHTML = `
-                <tr>
-                    <th>No. Rekening</th>
-                    <th>Nama Nasabah</th>
-                    <th>Jenis Tabungan</th>
-                    <th>Saldo Current</th>
-                    <th>Status</th>
-                </tr>
-            `;
-            document.getElementById('historyModal').style.display = 'flex';
-
-            try {
-                const res = await fetch(`/api/rekening/cif/${cif}`);
-                const result = await res.json();
-                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-
-                const tbody = document.getElementById('modalTableBody');
-                if (!result.data || result.data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">CIF ini belum memiliki Rekening Tabungan. Silakan buka di Modul DP01.</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = result.data.map(r => `
-                    <tr>
-                        <td><span class="rek-badge">${r.nomorRekening}</span></td>
-                        <td><strong>${r.namaNasabah}</strong></td>
-                        <td>${r.jenisTabungan}</td>
-                        <td style="color:var(--accent-green); font-weight:700;">Rp ${r.saldo.toLocaleString('id-ID')}</td>
-                        <td><span class="status-badge status-aktif">${r.statusRekening}</span></td>
-                    </tr>
-                `).join('');
-            } catch (err) {
-                alert('Gagal mengambil daftar rekening: ' + err);
-            }
-        }
-
-        async function showHistory(cif) {
-            if (currentUser && currentUser.role === 'TELLER') {
-                alert(`AKSES DITOLAK!\n\nUser '${currentUser.username}' ber-role TELLER tidak memiliki otorisasi untuk melihat detail Audit Trail Log.\n\nFitur ini khusus untuk SUPERVISOR / ADMIN.`);
-                return;
-            }
-
-            document.getElementById('modalTitle').innerText = `Audit Trail History: ${cif}`;
-            document.getElementById('modalTableHead').innerHTML = `
-                <tr>
-                    <th>Waktu</th>
-                    <th>CIF</th>
-                    <th>Aksi</th>
-                    <th>Detail Catatan Audit</th>
-                    <th>User ID</th>
-                </tr>
-            `;
-            document.getElementById('historyModal').style.display = 'flex';
-            try {
-                const res = await fetch(`/api/nasabah/${cif}/history`);
-                const result = await res.json();
-                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-                renderModalHistoryTable(result.data);
-            } catch (err) {
-                alert('Gagal mengambil data history: ' + err);
-            }
-        }
-
-        async function loadAllHistory() {
-            try {
-                const res = await fetch('/api/nasabah/history/all');
-                const result = await res.json();
-                document.getElementById('jsonOutput').innerText = JSON.stringify(result, null, 2);
-                renderFullHistoryTable(result.data);
-            } catch (err) {
-                alert('Gagal mengambil data history: ' + err);
-            }
-        }
-
-        function renderFullHistoryTable(list) {
-            const tbody = document.getElementById('fullHistoryTableBody');
-            if (!tbody) return;
-
-            if (!list || list.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Belum ada catatan history di sistem.</td></tr>';
-                return;
-            }
-            tbody.innerHTML = list.map(h => `
-                <tr>
-                    <td><small style="font-family:'JetBrains Mono';">${new Date(h.createdAt).toLocaleString('id-ID')}</small></td>
-                    <td><span class="cif-badge">${h.cif}</span></td>
-                    <td><span class="status-badge" style="background:rgba(139,92,246,0.2); color:var(--accent-purple); border:1px solid var(--accent-purple);">${h.actionType}</span></td>
-                    <td>${h.keterangan}</td>
-                    <td><strong>${h.updatedBy}</strong></td>
-                </tr>
-            `).join('');
-        }
-
-        function renderModalHistoryTable(list) {
-            const tbody = document.getElementById('modalTableBody');
-            if (!tbody) return;
-
-            if (!list || list.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Belum ada catatan history untuk nasabah ini.</td></tr>';
-                return;
-            }
-            tbody.innerHTML = list.map(h => `
-                <tr>
-                    <td><small style="font-family:'JetBrains Mono';">${new Date(h.createdAt).toLocaleString('id-ID')}</small></td>
-                    <td><span class="cif-badge">${h.cif}</span></td>
-                    <td><span class="status-badge" style="background:rgba(139,92,246,0.2); color:var(--accent-purple); border:1px solid var(--accent-purple);">${h.actionType}</span></td>
-                    <td>${h.keterangan}</td>
-                    <td><strong>${h.updatedBy}</strong></td>
-                </tr>
-            `).join('');
-        }
-
-        function closeModal() {
-            document.getElementById('historyModal').style.display = 'none';
-        }
-    </script>
+    <script type="text/javascript" src="/js/common.js"></script>
 </body>
 </html>

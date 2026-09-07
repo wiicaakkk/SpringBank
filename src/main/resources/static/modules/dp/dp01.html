@@ -1,37 +1,42 @@
-<div id="moduleDP01" class="card">
-    <div class="menu-banner">
-        <span>MODUL AKTIF: <strong>[DP01] PEMBUKAAN REKENING TABUNGAN BARU</strong></span>
-        <button onclick="executeMenuCommand('CLEAR')" style="background:none; border:none; color:var(--accent-blue); cursor:pointer;">[ Tutup Modul ]</button>
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[DP01] PEMBUKAAN REKENING TABUNGAN BARU</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">DP01</span></span>
     </div>
 
-    <form id="createRekeningForm" onsubmit="submitCreateRekening(event)">
-        <div class="form-row">
-            <div class="form-group">
-                <label>Nomor CIF Nasabah *</label>
-                <div class="input-lookup-group">
-                    <input type="text" id="dp01Cif" required placeholder="e.g. CIF202607260001">
-                    <button type="button" onclick="openCifLookup('dp01Cif')" class="btn" title="Cari CIF berdasarkan Nama / NIK">
-                        [ Cari CIF ]
-                    </button>
+    <div id="dp01Msg" class="cbs-msg"></div>
+
+    <form onsubmit="cbSubmitDP01(event)">
+        <div class="cbs-panel">
+            <div class="cbs-panel-title">DATA PEMBUKAAN REKENING</div>
+            <div class="cbs-grid-form">
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="dp01Cif">Nomor CIF Nasabah</label>
+                    <input type="text" id="dp01Cif" maxlength="20" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="dp01Jenis">Jenis Produk Tabungan</label>
+                    <select id="dp01Jenis" required>
+                        <option value="TABUNGAN_UTAMA">TABUNGAN UTAMA</option>
+                        <option value="TABUNGAN_BISNIS">TABUNGAN BISNIS PREMIER</option>
+                        <option value="DEPOSITO">DEPOSITO BERJANGKA</option>
+                    </select>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="dp01Setoran">Setoran Awal (Rp), min 50.000</label>
+                    <input type="number" id="dp01Setoran" min="50000" step="0.01" required>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Jenis Produk Tabungan *</label>
-                <select id="dp01JenisTabungan" required>
-                    <option value="TABUNGAN_UTAMA">Tabungan Utama Bank</option>
-                    <option value="TABUNGAN_BISNIS">Tabungan Bisnis Premier</option>
-                    <option value="DEPOSITO">Deposito Berjangka</option>
-                </select>
-            </div>
         </div>
 
-        <div class="form-group full" style="margin-bottom: 1.2rem;">
-            <label>Setoran Awal (Rp) * [Minimal Rp 50.000]</label>
-            <input type="number" id="dp01SetoranAwal" required placeholder="5000000" min="50000">
+        <div class="cbs-btns">
+            <button type="button" class="cbs-btn" onclick="cbLookupOpen('dp01Cif')">Cari CIF</button>
+            <button type="submit" id="dp01Submit" class="cbs-btn cbs-btn-ok">Buka Rekening</button>
+            <button type="reset" class="cbs-btn">Bersihkan</button>
         </div>
-
-        <button type="submit" class="btn btn-gold" style="width: 100%; justify-content: center; padding: 0.8rem; font-size: 1rem;">
-            Buka Rekening & Generasikan No. Rekening 10 Digit
-        </button>
     </form>
+
+    <div class="cbs-note">
+        Nomor rekening 10 digit diterbitkan otomatis oleh sistem dan langsung tercatat sebagai transaksi perdana.
+    </div>
 </div>

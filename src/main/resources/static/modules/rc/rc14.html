@@ -1,58 +1,71 @@
-<div id="moduleRC14" class="card">
-    <div class="menu-banner">
-        <span>MODUL AKTIF: <strong>[RC14] PEMELIHARAAN DATA PROFIL NASABAH (CIF MAINTENANCE)</strong></span>
-        <button onclick="executeMenuCommand('CLEAR')" style="background:none; border:none; color:var(--accent-blue); cursor:pointer;">[ Tutup Modul ]</button>
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[RC14] PEMELIHARAAN DATA PROFIL NASABAH (CIF)</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">RC14</span></span>
     </div>
 
-    <div style="margin-bottom: 1rem;" class="input-lookup-group">
-        <input type="text" id="rc14SearchCif" placeholder="Masukkan Nomor CIF (e.g. CIF202607260001)...">
-        <button onclick="openCifLookup('rc14SearchCif')" class="btn" title="Cari CIF berdasarkan Nama / NIK">
-            [ Cari CIF ]
-        </button>
-        <button onclick="loadCifForUpdate()" class="btn btn-gold">Load Data CIF</button>
+    <div id="rc14Msg" class="cbs-msg"></div>
+
+    <div class="cbs-panel">
+        <div class="cbs-panel-title">IDENTIFIKASI CIF</div>
+        <div class="cbs-grid-form">
+            <div class="cbs-field">
+                <label class="cbs-label req" for="rc14Cif">Nomor CIF</label>
+                <input type="text" id="rc14Cif" maxlength="20">
+            </div>
+        </div>
+        <div class="cbs-btns" style="margin:8px 0 0; justify-content:flex-end">
+            <button type="button" class="cbs-btn" onclick="cbLookupOpen('rc14Cif')">Cari CIF</button>
+            <button type="button" class="cbs-btn cbs-btn-ok" onclick="cbRC14LoadCif()">Load Data CIF</button>
+        </div>
     </div>
 
-    <form id="updateForm" onsubmit="submitUpdateProfile(event)" style="display: none;">
-        <div class="form-row">
-            <div class="form-group">
-                <label>Nomor CIF (Readonly)</label>
-                <input type="text" id="updateCif" readonly style="opacity: 0.7; font-family: 'JetBrains Mono';">
-            </div>
-            <div class="form-group">
-                <label>Nama Lengkap *</label>
-                <input type="text" id="updateNamaLengkap" required>
+    <form id="rc14Form" onsubmit="cbSubmitRC14(event)" style="display:none">
+        <div class="cbs-panel">
+            <div class="cbs-panel-title">PROFIL NASABAH</div>
+            <div class="cbs-grid-form">
+                <div class="cbs-field">
+                    <label class="cbs-label" for="rc14CifRo">Nomor CIF</label>
+                    <input type="text" id="rc14CifRo" class="cbs-input-ro" readonly>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label" for="rc14NikRo">NIK</label>
+                    <input type="text" id="rc14NikRo" class="cbs-input-ro" readonly>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="rc14Nama">Nama Lengkap</label>
+                    <input type="text" id="rc14Nama" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="rc14Alamat">Alamat Domisili</label>
+                    <input type="text" id="rc14Alamat" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="rc14Hp">Nomor HP</label>
+                    <input type="text" id="rc14Hp" inputmode="tel" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="rc14Email">Email</label>
+                    <input type="email" id="rc14Email" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="rc14Pekerjaan">Pekerjaan</label>
+                    <input type="text" id="rc14Pekerjaan" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="rc14Penghasilan">Penghasilan Bulanan (Rp)</label>
+                    <input type="number" id="rc14Penghasilan" min="0" step="0.01" required>
+                </div>
             </div>
         </div>
 
-        <div class="form-group full" style="margin-bottom: 1rem;">
-            <label>Alamat Lengkap *</label>
-            <input type="text" id="updateAlamat" required>
+        <div class="cbs-btns">
+            <button type="submit" id="rc14Submit" class="cbs-btn cbs-btn-ok">Simpan Perubahan</button>
+            <button type="reset" class="cbs-btn">Bersihkan Form</button>
         </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label>Nomor HP *</label>
-                <input type="text" id="updateNomorHp" required>
-            </div>
-            <div class="form-group">
-                <label>Email *</label>
-                <input type="email" id="updateEmail" required>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label>Pekerjaan *</label>
-                <input type="text" id="updatePekerjaan" required>
-            </div>
-            <div class="form-group">
-                <label>Penghasilan Bulanan (Rp) *</label>
-                <input type="number" id="updatePenghasilanBulanan" required>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 0.5rem; justify-content: center; padding: 0.8rem; font-size: 1rem;">
-            Simpan Perubahan Profile CIF & Catat Audit Log
-        </button>
     </form>
+
+    <div class="cbs-note">
+        Setiap penyimpanan perubahan profil akan tercatat pada audit trail (RC13).
+    </div>
 </div>

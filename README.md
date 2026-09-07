@@ -1,91 +1,50 @@
-# 🏦 Core Banking System - Pendaftaran Nasabah & Generator Nomor CIF
+# SpringBank
 
-Selamat datang di proyek **Core Banking System (Pendaftaran Nasabah & CIF Generator)** berbasis **Java 21**, **Spring Boot 3**, **Spring Data JPA**, **H2 Database (In-Memory)**, **Lombok**, dan **Validation**.
+Core banking backend: pendaftaran nasabah (CIF), rekening, dan transfer OTC. Java 21, Spring Boot, JPA, PostgreSQL, Redis. Frontend gaya UI bank legacy (WinVader).
 
----
+## Fitur
 
-## 🔑 Konsep Utama CIF (Customer Information File)
+- Registrasi nasabah, nomor CIF digenerate otomatis: `CIF` + `YYYYMMDD` + 4 digit urut (contoh `CIF202607260001`)
+- Pencarian nasabah berdasarkan CIF, NIK, atau nama
+- Update data dan status nasabah (AKTIF, PENDING_VERIFIKASI, BLOCKED), plus riwayat audit tiap perubahan
+- Buka rekening tabungan dan transfer OTC
+- Login 3 role: TELLER, SUPERVISOR, ADMIN. Layar RC13 (maintenance CIF update) hanya untuk SUPERVISOR dan ADMIN
 
-Di dalam perbankan, **CIF (Customer Information File)** adalah nomor identifikasi unik utama bagi setiap nasabah.
-Format penomoran CIF otomatis pada aplikasi ini:
-`CIF` + `YYYYMMDD` + `4-Digit Sequence` (Contoh: `CIF202607260001`).
+## Menjalankan
 
-Setiap data CIF menyimpan data sensitif & penting perbankan:
-- **NIK (16 Digit KTP)** & Nama Lengkap
-- **Tempat / Tanggal Lahir** & Jenis Kelamin
-- **Nama Ibu Kandung** *(Bidang Keamanan Wajib Perbankan)*
-- **Alamat Domisili**, Nomor HP, & Email
-- **Pekerjaan** & **Penghasilan Bulanan**
-- **Status Nasabah** (`AKTIF`, `PENDING_VERIFIKASI`, `BLOCKED`)
-
----
-
-## 🏗️ Struktur Proyek (Clean Layered Architecture)
-
-```
-com.belajar.springboot/
-├── BelajarSpringbootApplication.java  # Main Entry Point Aplikasi
-├── config/
-│   └── DataInitializer.java           # Seeder 3 Nasabah resmi pertama dengan CIF
-├── controller/
-│   └── NasabahController.java         # REST Endpoints (/api/nasabah)
-├── dto/
-│   ├── RegisterNasabahRequest.java    # Input Pendaftaran dengan Validasi
-│   ├── UpdateNasabahRequest.java      # Input Update Profil
-│   ├── NasabahResponse.java           # Format Output Response Nasabah + CIF
-│   └── WebResponse.java               # Standard JSON Response Wrapper
-├── entity/
-│   ├── Nasabah.java                   # Entity JPA Table 'nasabah'
-│   ├── JenisKelamin.java              # Enum LAKI_LAKI / PEREMPUAN
-│   └── StatusNasabah.java             # Enum AKTIF / PENDING_VERIFIKASI / BLOCKED
-├── exception/
-│   └── GlobalExceptionHandler.java    # Error Handler untuk NIK ganda & Validasi
-├── repository/
-│   └── NasabahRepository.java         # JpaRepository (CIF Lookup & Search Query)
-└── service/
-    └── NasabahService.java            # Algoritma Auto CIF Generator & Logika Bisnis Bank
-```
-
----
-
-## 🚀 Cara Menjalankan Server
+Prasyarat: Java 21, PostgreSQL (schema `bankdb`), Redis. Konfigurasi DB di `src/main/resources/application.properties` atau lewat env (`SPRING_DATASOURCE_*`, `SPRING_DATA_REDIS_*`).
 
 ```bash
-# 1. Load SDKMAN (Java 21 & Maven)
-source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-# 2. Jalankan Spring Boot
 ./mvnw spring-boot:run
 ```
 
-Aplikasi dapat diakses di: **`http://localhost:8080`**
+App di `http://localhost:8080`. User demo: `teller1`, `spv1`, `admin1` (password `password123`), dibuat otomatis oleh `DataInitializer`.
 
----
+## API
 
-## 🖥️ Interactive Web Dashboard & H2 Console
+Semua endpoint selain login butuh header `Authorization: Bearer <token>` dari `POST /api/auth/login`.
 
-1. **Dashboard Perbankan Interaktif**:
-   Buka browser ke **`http://localhost:8080`**
-   - Form Pendaftaran Nasabah Baru
-   - Notifikasi Penerbitan Nomor CIF Resmi secara otomatis
-   - Pencarian Nasabah berdasarkan CIF, NIK, atau Nama
-   - Tombol blokir / aktifkan status nasabah
+| Method | Path | Fungsi |
+|---|---|---|
+| POST | `/api/auth/login` | Login, dapat token |
+| POST | `/api/auth/logout` | Logout, token di-blacklist (Redis) |
+| POST | `/api/nasabah/register` | Daftar nasabah baru, CIF digenerate otomatis |
+| GET | `/api/nasabah` | Semua nasabah |
+| GET | `/api/nasabah/search?keyword=` | Cari by CIF / NIK / nama |
+| GET | `/api/nasabah/{cif}` | Detail satu nasabah |
+| PUT | `/api/nasabah/{cif}` | Update data atau status nasabah |
+| GET | `/api/nasabah/{cif}/history` | Riwayat perubahan satu nasabah |
+| GET | `/api/nasabah/history/all` | Riwayat perubahan semua nasabah |
+| POST | `/api/rekening/create` | Buka rekening tabungan |
+| POST | `/api/rekening/transfer` | Transfer OTC antar rekening (transaksional) |
+| GET | `/api/rekening/cif/{cif}` | Rekening milik nasabah |
+| GET | `/api/v1/transaksi/summary` | Rekap transaksi |
+| POST | `/api/v1/transaksi` | Transaksi umum (debit/kredit) |
 
-2. **H2 Console Database**:
-   Buka **`http://localhost:8080/h2-console`**
-   - **JDBC URL**: `jdbc:h2:mem:belajardb`
-   - **Username**: `sa`
-   - **Password**: *(kosongkan)*
+Contoh registrasi nasabah:
 
----
-
-## 📡 REST API Documentation
-
-### 1. Register Nasabah Baru (Auto Generate CIF)
-- **Method**: `POST`
-- **URL**: `http://localhost:8080/api/nasabah/register`
-- **Body JSON**:
 ```json
+POST /api/nasabah/register
 {
   "nik": "3171012005900004",
   "namaLengkap": "Rina Melati",
@@ -101,18 +60,6 @@ Aplikasi dapat diakses di: **`http://localhost:8080`**
 }
 ```
 
-### 2. Get Seluruh Data Nasabah
-- **Method**: `GET`
-- **URL**: `http://localhost:8080/api/nasabah`
+## Struktur
 
-### 3. Cari Nasabah Berdasarkan CIF
-- **Method**: `GET`
-- **URL**: `http://localhost:8080/api/nasabah/CIF202607260001`
-
-### 4. Search Nasabah (Kata Kunci: CIF / NIK / Nama)
-- **Method**: `GET`
-- **URL**: `http://localhost:8080/api/nasabah/search?keyword=Santoso`
-
-### 5. Update Status Nasabah (Block / Aktifkan)
-- **Method**: `PATCH`
-- **URL**: `http://localhost:8080/api/nasabah/CIF202607260001/status?status=BLOCKED`
+Paket per domain: `rc` (nasabah/CIF), `dp` (rekening & transfer), `auth` (login & role), `config` (Redis, seeder), `common` (response wrapper, error handler). Frontend statis di `src/main/resources/static` dikirim langsung oleh Spring Boot.
