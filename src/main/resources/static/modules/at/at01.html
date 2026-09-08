@@ -1,0 +1,46 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[AT01] INQUIRY AUTO TRANSFER</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">AT01</span></span>
+    </div>
+
+    <div id="at01Msg" class="cbs-msg"></div>
+
+    <div class="cbs-panel">
+        <div class="cbs-panel-title">DAFTAR INSTRUKSI AUTO TRANSFER</div>
+        <div class="cbs-toolbar">
+            <div class="cbs-field" style="margin:0">
+                <label class="cbs-label" for="at01Status">Filter Status</label>
+                <select id="at01Status" onchange="cbAT01Load()">
+                    <option value="">SEMUA</option>
+                    <option value="AKTIF">AKTIF</option>
+                    <option value="BERHENTI">BERHENTI</option>
+                </select>
+            </div>
+            <button type="button" class="cbs-btn cbs-btn-ok" onclick="cbAT01Load()">Refresh</button>
+            <button type="button" class="cbs-btn" onclick="cbATExecAll(this)">Eksekusi Jatuh Tempo</button>
+            <button type="button" class="cbs-btn" onclick="cbMenu('AT02')">Registrasi Baru</button>
+        </div>
+        <div style="overflow:auto">
+            <table class="cbs-grid">
+                <thead>
+                    <tr>
+                        <th>Kode</th>
+                        <th>Rek. Debit</th>
+                        <th>Rek. Kredit</th>
+                        <th>Nominal</th>
+                        <th>Periode</th>
+                        <th>Tgl Mulai</th>
+                        <th>Tgl Berikutnya</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="at01Body">
+                    <tr><td colspan="9" class="cbs-empty">MEMUAT DATA...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="at01History" style="margin-top:8px"></div>
+    </div>
+</div>

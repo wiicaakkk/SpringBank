@@ -1,0 +1,51 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[GL01] INQUIRY NERACA</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">GL01</span></span>
+    </div>
+
+    <div id="gl01Msg" class="cbs-msg"></div>
+
+    <div class="cbs-panel">
+        <div class="cbs-panel-title">NERACA PER TANGGAL</div>
+        <div class="cbs-toolbar">
+            <div class="cbs-field" style="margin:0">
+                <label class="cbs-label" for="gl01Tanggal">Tanggal</label>
+                <input type="date" id="gl01Tanggal">
+            </div>
+            <button type="button" class="cbs-btn cbs-btn-ok" onclick="cbGL01Load()">Tampilkan</button>
+        </div>
+
+        <div class="cbs-panes">
+            <div class="cbs-pane">
+                <table class="cbs-grid">
+                    <thead>
+                        <tr><th colspan="3">AKTIVA</th></tr>
+                        <tr><th>Kode</th><th>Nama Akun</th><th>Saldo (Rp)</th></tr>
+                    </thead>
+                    <tbody id="gl01Aktiva">
+                        <tr><td colspan="3" class="cbs-empty">MEMUAT DATA...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="cbs-pane">
+                <table class="cbs-grid">
+                    <thead>
+                        <tr><th colspan="3">PASIVA (KEWAJIBAN &amp; EKUITAS)</th></tr>
+                        <tr><th>Kode</th><th>Nama Akun</th><th>Saldo (Rp)</th></tr>
+                    </thead>
+                    <tbody id="gl01Pasiva">
+                        <tr><td colspan="3" class="cbs-empty">MEMUAT DATA...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="gl01Ringkas" class="cbs-note" style="margin-top:8px"></div>
+    </div>
+
+    <div class="cbs-note">
+        Neraca menyajikan posisi keuangan bank: total aktiva harus selalu sama dengan total pasiva (seimbang).
+        Setiap transaksi uang (setoran, tarik, transfer, auto transfer) diposting otomatis ke akun GL saat diproses.
+    </div>
+</div>

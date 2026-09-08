@@ -1,0 +1,37 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[GL02] DAFTAR AKUN (CHART OF ACCOUNTS)</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">GL02</span></span>
+    </div>
+
+    <div id="gl02Msg" class="cbs-msg"></div>
+
+    <div class="cbs-panel">
+        <div class="cbs-panel-title">DAFTAR AKUN GL</div>
+        <div class="cbs-toolbar">
+            <button type="button" class="cbs-btn cbs-btn-ok" onclick="cbGL02Load()">Refresh</button>
+        </div>
+        <div style="overflow:auto">
+            <table class="cbs-grid">
+                <thead>
+                    <tr>
+                        <th>Kode</th>
+                        <th>Nama Akun</th>
+                        <th>Jenis</th>
+                        <th>Posisi Normal</th>
+                        <th>Saldo (Rp)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="gl02Body">
+                    <tr><td colspan="6" class="cbs-empty">MEMUAT DATA...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="cbs-note">
+        Saldo akun dihitung dari seluruh posting jurnal (gl_entry) yang diposting sampai hari berjalan.
+        Akun baru dapat ditambahkan lewat API POST /api/coa.
+    </div>
+</div>

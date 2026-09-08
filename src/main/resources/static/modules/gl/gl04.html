@@ -1,0 +1,51 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[GL04] LAPORAN LABA RUGI</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">GL04</span></span>
+    </div>
+
+    <div id="gl04Msg" class="cbs-msg"></div>
+
+    <div class="cbs-panel">
+        <div class="cbs-panel-title">LABA RUGI PER TANGGAL</div>
+        <div class="cbs-toolbar">
+            <div class="cbs-field" style="margin:0">
+                <label class="cbs-label" for="gl04Tanggal">Tanggal</label>
+                <input type="date" id="gl04Tanggal">
+            </div>
+            <button type="button" class="cbs-btn cbs-btn-ok" onclick="cbGL04Load()">Tampilkan</button>
+        </div>
+
+        <div class="cbs-panes">
+            <div class="cbs-pane">
+                <table class="cbs-grid">
+                    <thead>
+                        <tr><th colspan="3">PENDAPATAN</th></tr>
+                        <tr><th>Kode</th><th>Nama Akun</th><th>Saldo (Rp)</th></tr>
+                    </thead>
+                    <tbody id="gl04Pendapatan">
+                        <tr><td colspan="3" class="cbs-empty">MEMUAT DATA...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="cbs-pane">
+                <table class="cbs-grid">
+                    <thead>
+                        <tr><th colspan="3">BEBAN</th></tr>
+                        <tr><th>Kode</th><th>Nama Akun</th><th>Saldo (Rp)</th></tr>
+                    </thead>
+                    <tbody id="gl04Beban">
+                        <tr><td colspan="3" class="cbs-empty">MEMUAT DATA...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="gl04Ringkas" class="cbs-note" style="margin-top:8px"></div>
+    </div>
+
+    <div class="cbs-note">
+        Laba rugi berasal dari selisih pendapatan dan beban yang dibukukan lewat jurnal umum (GL03).
+        Laba bersih positif ditambahkan ke neraca sebagai "Laba / Rugi Berjalan".
+    </div>
+</div>

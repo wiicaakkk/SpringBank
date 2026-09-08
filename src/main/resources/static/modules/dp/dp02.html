@@ -1,34 +1,41 @@
-<div id="moduleDP02" class="card">
-    <div class="menu-banner">
-        <span>MODUL AKTIF: <strong>[DP02] TRANSAKSI OVER-THE-COUNTER & TRANSFER ANTAREKENING</strong></span>
-        <button onclick="executeMenuCommand('CLEAR')" style="background:none; border:none; color:var(--accent-blue); cursor:pointer;">[ Tutup Modul ]</button>
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[DP02] TRANSFER ANTAR REKENING (OVER THE COUNTER)</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">DP02</span></span>
     </div>
 
-    <form id="transferForm" onsubmit="submitTransfer(event)">
-        <div class="form-row">
-            <div class="form-group">
-                <label>Nomor Rekening Asal (Debit) *</label>
-                <input type="text" id="dp02RekAsal" required placeholder="e.g. 3436196555">
-            </div>
-            <div class="form-group">
-                <label>Nomor Rekening Tujuan (Kredit) *</label>
-                <input type="text" id="dp02RekTujuan" required placeholder="e.g. 8081350139">
+    <div id="dp02Msg" class="cbs-msg"></div>
+
+    <form onsubmit="cbSubmitDP02(event)">
+        <div class="cbs-panel">
+            <div class="cbs-panel-title">DATA TRANSFER</div>
+            <div class="cbs-grid-form">
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="dp02Asal">Rekening Asal (Debit)</label>
+                    <input type="text" id="dp02Asal" maxlength="20" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="dp02Tujuan">Rekening Tujuan (Kredit)</label>
+                    <input type="text" id="dp02Tujuan" maxlength="20" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="dp02Nominal">Nominal Transfer (Rp), min 10.000</label>
+                    <input type="number" id="dp02Nominal" min="10000" step="0.01" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label" for="dp02Berita">Berita / Keterangan</label>
+                    <input type="text" id="dp02Berita" maxlength="255">
+                </div>
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label>Nominal Transfer (Rp) * [Minimal Rp 10.000]</label>
-                <input type="number" id="dp02Nominal" required placeholder="1500000" min="10000">
-            </div>
-            <div class="form-group">
-                <label>Berita / Keterangan Transaksi</label>
-                <input type="text" id="dp02Berita" placeholder="Transfer Honor Pekerjaan">
-            </div>
+        <div class="cbs-btns">
+            <button type="submit" id="dp02Submit" class="cbs-btn cbs-btn-ok">Eksekusi Transfer</button>
+            <button type="reset" class="cbs-btn">Bersihkan</button>
         </div>
-
-        <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 0.5rem; justify-content: center; padding: 0.8rem; font-size: 1rem;">
-            Eksekusi Transaksi Transfer (@Transactional Engine)
-        </button>
     </form>
+
+    <div class="cbs-note">
+        Transfer diproses dalam satu transaksi database (debit dan kredit dicatat bersamaan).
+    </div>
 </div>

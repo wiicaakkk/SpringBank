@@ -1,22 +1,26 @@
-<div id="moduleRC13" class="card">
-    <div class="menu-banner">
-        <span>MODUL AKTIF: <strong>[RC13] SYSTEM AUDIT TRAIL HISTORY LOGS (SUPERVISOR / ADMIN ONLY)</strong></span>
-        <button onclick="executeMenuCommand('CLEAR')" style="background:none; border:none; color:var(--accent-blue); cursor:pointer;">[ Tutup Modul ]</button>
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[RC13] SYSTEM AUDIT TRAIL HISTORY LOGS</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">RC13</span></span>
     </div>
 
-    <div style="overflow-x: auto;">
-        <table>
+    <div class="cbs-note">
+        Menu ini dibatasi untuk Supervisor atau Admin. Menampilkan seluruh jejak audit perubahan data CIF.
+    </div>
+
+    <div class="cbs-grid-wrap">
+        <table class="cbs-grid">
             <thead>
                 <tr>
-                    <th>Waktu (Timestamp)</th>
+                    <th>Waktu</th>
                     <th>CIF Target</th>
                     <th>Tipe Aksi</th>
-                    <th>Detail Catatan Audit</th>
-                    <th>User ID (Operator)</th>
+                    <th>Keterangan</th>
+                    <th>User Operator</th>
                 </tr>
             </thead>
-            <tbody id="fullHistoryTableBody">
-                <tr><td colspan="5" style="text-align: center;">Memuat data audit trail...</td></tr>
+            <tbody id="rc13Body">
+                <tr><td colspan="5" class="cbs-empty">MEMUAT DATA...</td></tr>
             </tbody>
         </table>
     </div>

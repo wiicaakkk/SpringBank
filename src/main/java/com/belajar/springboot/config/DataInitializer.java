@@ -6,6 +6,12 @@ import com.belajar.springboot.auth.repository.UserRepository;
 import com.belajar.springboot.dp.entity.JenisTabungan;
 import com.belajar.springboot.dp.entity.Rekening;
 import com.belajar.springboot.dp.repository.RekeningRepository;
+import com.belajar.springboot.gl.entity.Coa;
+import com.belajar.springboot.gl.entity.JenisAkun;
+import com.belajar.springboot.gl.entity.PosisiNormal;
+import com.belajar.springboot.gl.repository.CoaRepository;
+import com.belajar.springboot.gl.repository.GlEntryRepository;
+import com.belajar.springboot.gl.service.GlPostingService;
 import com.belajar.springboot.rc.entity.JenisKelamin;
 import com.belajar.springboot.rc.entity.Nasabah;
 import com.belajar.springboot.rc.entity.NasabahHistory;
@@ -18,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -36,6 +43,15 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private com.belajar.springboot.dp.repository.TransaksiRepository transaksiRepository;
+
+    @Autowired
+    private CoaRepository coaRepository;
+
+    @Autowired
+    private GlEntryRepository glEntryRepository;
+
+    @Autowired
+    private GlPostingService glPostingService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -192,6 +208,41 @@ public class DataInitializer implements CommandLineRunner {
                     .build());
 
             System.out.println("[INITIALIZER] Initial Transaksi (Jan 2025 - Apr 2025) Berhasil Seeded!");
+        }
+
+        {
+            List<Coa> coaList = List.of(
+                    Coa.builder().kodeAkun(GlPostingService.KAS).namaAkun("Kas").jenisAkun(JenisAkun.ASET).posisiNormal(PosisiNormal.DEBIT).build(),
+                    Coa.builder().kodeAkun(GlPostingService.KAS_KECIL).namaAkun("Kas Kecil").jenisAkun(JenisAkun.ASET).posisiNormal(PosisiNormal.DEBIT).build(),
+                    Coa.builder().kodeAkun(GlPostingService.TABUNGAN).namaAkun("Rekening Tabungan").jenisAkun(JenisAkun.KEWAJIBAN).posisiNormal(PosisiNormal.KREDIT).build(),
+                    Coa.builder().kodeAkun(GlPostingService.GIRO).namaAkun("Rekening Giro").jenisAkun(JenisAkun.KEWAJIBAN).posisiNormal(PosisiNormal.KREDIT).build(),
+                    Coa.builder().kodeAkun(GlPostingService.DEPOSITO).namaAkun("Deposito Berjangka").jenisAkun(JenisAkun.KEWAJIBAN).posisiNormal(PosisiNormal.KREDIT).build(),
+                    Coa.builder().kodeAkun(GlPostingService.KREDIT_DIBERIKAN).namaAkun("Kredit yang Diberikan").jenisAkun(JenisAkun.ASET).posisiNormal(PosisiNormal.DEBIT).build(),
+                    Coa.builder().kodeAkun(GlPostingService.MODAL_DASAR).namaAkun("Modal Dasar").jenisAkun(JenisAkun.EKUITAS).posisiNormal(PosisiNormal.KREDIT).build(),
+                    Coa.builder().kodeAkun(GlPostingService.PENDAPATAN_ADMIN).namaAkun("Pendapatan Administrasi").jenisAkun(JenisAkun.PENDAPATAN).posisiNormal(PosisiNormal.KREDIT).build(),
+                    Coa.builder().kodeAkun(GlPostingService.PENDAPATAN_JASA).namaAkun("Pendapatan Jasa").jenisAkun(JenisAkun.PENDAPATAN).posisiNormal(PosisiNormal.KREDIT).build(),
+                    Coa.builder().kodeAkun(GlPostingService.BEBAN_OPERASIONAL).namaAkun("Beban Operasional").jenisAkun(JenisAkun.BEBAN).posisiNormal(PosisiNormal.DEBIT).build(),
+                    Coa.builder().kodeAkun(GlPostingService.BEBAN_UMUM).namaAkun("Beban Umum dan Administrasi").jenisAkun(JenisAkun.BEBAN).posisiNormal(PosisiNormal.DEBIT).build()
+            );
+            for (Coa coa : coaList) {
+                if (!coaRepository.existsByKodeAkun(coa.getKodeAkun())) {
+                    coaRepository.save(coa);
+                }
+            }
+            System.out.println("[INITIALIZER] Chart of Accounts Berhasil Disinkronkan!");
+        }
+
+        if (glEntryRepository.count() == 0) {
+            BigDecimal totalSaldo = rekeningRepository.findAll().stream()
+                    .map(Rekening::getSaldo)
+                    .filter(saldo -> saldo != null)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            if (totalSaldo.compareTo(BigDecimal.ZERO) > 0) {
+                glPostingService.post(GlPostingService.KAS, GlPostingService.TABUNGAN, totalSaldo,
+                        "OPENING", "Saldo pembukaan rekening tabungan (seeding)", "SYSTEM");
+                System.out.println("[INITIALIZER] Posting GL Pembukaan Berhasil: " + totalSaldo);
+            }
         }
     }
 }

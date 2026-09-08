@@ -1,0 +1,30 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[DP06] BLOKIR / BUKA BLOKIR REKENING</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">DP06</span></span>
+    </div>
+
+    <div id="dp06Msg" class="cbs-msg"></div>
+
+    <form>
+        <div class="cbs-panel">
+            <div class="cbs-panel-title">STATUS REKENING</div>
+            <div class="cbs-grid-form">
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="dp06Norek">Nomor Rekening</label>
+                    <input type="text" id="dp06Norek" maxlength="20" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="cbs-btns">
+            <button type="button" class="cbs-btn cbs-btn-ok" onclick="cbSubmitDP06('BLOCK')">Blokir Rekening</button>
+            <button type="button" class="cbs-btn" onclick="cbSubmitDP06('UNBLOCK')">Buka Blokir</button>
+            <button type="reset" class="cbs-btn">Bersihkan</button>
+        </div>
+    </form>
+
+    <div class="cbs-note">
+        Rekening yang diblokir tidak dapat digunakan untuk transfer, tarik tunai, atau eksekusi auto transfer.
+    </div>
+</div>

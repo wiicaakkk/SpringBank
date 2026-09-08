@@ -1,0 +1,50 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[AT02] REGISTRASI AUTO TRANSFER</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">AT02</span></span>
+    </div>
+
+    <div id="at02Msg" class="cbs-msg"></div>
+
+    <form onsubmit="cbSubmitAT02(event)">
+        <div class="cbs-panel">
+            <div class="cbs-panel-title">DATA INSTRUKSI</div>
+            <div class="cbs-grid-form">
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="at02Debit">Rekening Sumber (Debit)</label>
+                    <input type="text" id="at02Debit" maxlength="20" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="at02Kredit">Rekening Tujuan (Kredit)</label>
+                    <input type="text" id="at02Kredit" maxlength="20" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="at02Nominal">Nominal (Rp), min 10.000</label>
+                    <input type="number" id="at02Nominal" min="10000" step="0.01" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="at02Periode">Periode</label>
+                    <select id="at02Periode" required>
+                        <option value="HARIAN">HARIAN</option>
+                        <option value="MINGGUAN">MINGGUAN</option>
+                        <option value="BULANAN">BULANAN</option>
+                    </select>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label" for="at02Mulai">Tanggal Mulai</label>
+                    <input type="date" id="at02Mulai">
+                </div>
+            </div>
+        </div>
+
+        <div class="cbs-btns">
+            <button type="submit" id="at02Submit" class="cbs-btn cbs-btn-ok">Daftarkan Instruksi</button>
+            <button type="reset" class="cbs-btn">Bersihkan</button>
+        </div>
+    </form>
+
+    <div class="cbs-note">
+        Instruksi dieksekusi otomatis lewat proses harian (jam 07:15) saat tanggal berjalan mencapai tanggal berikutnya.
+        Uang dipindahkan dari rekening sumber ke rekening tujuan; jika saldo tidak cukup, eksekusi dicatat GAGAL dan dijadwalkan ulang.
+    </div>
+</div>

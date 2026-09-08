@@ -1,0 +1,55 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[GL05] BUKU BESAR AKUN</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">GL05</span></span>
+    </div>
+
+    <div id="gl05Msg" class="cbs-msg"></div>
+
+    <div class="cbs-panel">
+        <div class="cbs-panel-title">LEDGER / BUKU BESAR PER AKUN</div>
+        <div class="cbs-toolbar">
+            <div class="cbs-field" style="margin:0">
+                <label class="cbs-label" for="gl05Akun">Akun (kosong = semua)</label>
+                <select id="gl05Akun">
+                    <option value="">SEMUA AKUN</option>
+                </select>
+            </div>
+            <div class="cbs-field" style="margin:0">
+                <label class="cbs-label" for="gl05Dari">Dari</label>
+                <input type="date" id="gl05Dari">
+            </div>
+            <div class="cbs-field" style="margin:0">
+                <label class="cbs-label" for="gl05Sampai">Sampai</label>
+                <input type="date" id="gl05Sampai">
+            </div>
+            <button type="button" class="cbs-btn cbs-btn-ok" onclick="cbGL05Load()">Tampilkan</button>
+        </div>
+
+        <table class="cbs-grid">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Akun</th>
+                    <th>Sisi</th>
+                    <th>Nominal (Rp)</th>
+                    <th>Ref</th>
+                    <th>Keterangan</th>
+                    <th>Operator</th>
+                    <th>Saldo</th>
+                </tr>
+            </thead>
+            <tbody id="gl05Body">
+                <tr><td colspan="8" class="cbs-empty">MEMUAT DATA...</td></tr>
+            </tbody>
+            <tfoot id="gl05Foot"></tfoot>
+        </table>
+
+        <div id="gl05Ringkas" class="cbs-note" style="margin-top:8px"></div>
+    </div>
+
+    <div class="cbs-note">
+        Saldo berjalan dinyatakan pada sisi normal akun (aset/beban di debet, kewajiban/ekuitas/pendapatan di kredit).
+        Jurnal umum (GL03) dan seluruh transaksi DP/AT otomatis tercatat di sini.
+    </div>
+</div>

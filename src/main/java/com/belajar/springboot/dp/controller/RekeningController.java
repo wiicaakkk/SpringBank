@@ -1,6 +1,7 @@
 package com.belajar.springboot.dp.controller;
 
 import com.belajar.springboot.common.dto.WebResponse;
+import com.belajar.springboot.dp.dto.CashOperationRequest;
 import com.belajar.springboot.dp.dto.CreateRekeningRequest;
 import com.belajar.springboot.dp.dto.RekeningResponse;
 import com.belajar.springboot.dp.dto.TransferRequest;
@@ -48,6 +49,83 @@ public class RekeningController {
                 .data("TRANSFER_SUCCESS")
                 .build();
         
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/setor")
+    public ResponseEntity<WebResponse<RekeningResponse>> setorTunai(
+            @Valid @RequestBody CashOperationRequest request,
+            @RequestHeader(value = "X-Operator-Id", required = false, defaultValue = "TELLER1") String operatorId) {
+
+        RekeningResponse data = rekeningService.setorTunai(request, operatorId);
+        WebResponse<RekeningResponse> response = WebResponse.<RekeningResponse>builder()
+                .status("SUCCESS")
+                .message(String.format("Setoran tunai Rp %s ke Rekening %s BERHASIL!",
+                        request.getNominal(), request.getNomorRekening()))
+                .data(data)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/tarik")
+    public ResponseEntity<WebResponse<RekeningResponse>> tarikTunai(
+            @Valid @RequestBody CashOperationRequest request,
+            @RequestHeader(value = "X-Operator-Id", required = false, defaultValue = "TELLER1") String operatorId) {
+
+        RekeningResponse data = rekeningService.tarikTunai(request, operatorId);
+        WebResponse<RekeningResponse> response = WebResponse.<RekeningResponse>builder()
+                .status("SUCCESS")
+                .message(String.format("Tarik tunai Rp %s dari Rekening %s BERHASIL!",
+                        request.getNominal(), request.getNomorRekening()))
+                .data(data)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{nomorRekening}/penutupan")
+    public ResponseEntity<WebResponse<RekeningResponse>> tutupRekening(
+            @PathVariable("nomorRekening") String nomorRekening,
+            @RequestHeader(value = "X-Operator-Id", required = false, defaultValue = "TELLER1") String operatorId) {
+
+        RekeningResponse data = rekeningService.tutupRekening(nomorRekening, operatorId);
+        WebResponse<RekeningResponse> response = WebResponse.<RekeningResponse>builder()
+                .status("SUCCESS")
+                .message("Rekening " + nomorRekening + " BERHASIL ditutup!")
+                .data(data)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{nomorRekening}/blokir")
+    public ResponseEntity<WebResponse<RekeningResponse>> blokirRekening(
+            @PathVariable("nomorRekening") String nomorRekening,
+            @RequestHeader(value = "X-Operator-Id", required = false, defaultValue = "TELLER1") String operatorId) {
+
+        RekeningResponse data = rekeningService.blokirRekening(nomorRekening, operatorId);
+        WebResponse<RekeningResponse> response = WebResponse.<RekeningResponse>builder()
+                .status("SUCCESS")
+                .message("Rekening " + nomorRekening + " BERHASIL diblokir!")
+                .data(data)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{nomorRekening}/buka-blokir")
+    public ResponseEntity<WebResponse<RekeningResponse>> bukaBlokirRekening(
+            @PathVariable("nomorRekening") String nomorRekening,
+            @RequestHeader(value = "X-Operator-Id", required = false, defaultValue = "TELLER1") String operatorId) {
+
+        RekeningResponse data = rekeningService.bukaBlokirRekening(nomorRekening, operatorId);
+        WebResponse<RekeningResponse> response = WebResponse.<RekeningResponse>builder()
+                .status("SUCCESS")
+                .message("Rekening " + nomorRekening + " BERHASIL dibuka blokirnya!")
+                .data(data)
+                .build();
+
         return ResponseEntity.ok(response);
     }
 

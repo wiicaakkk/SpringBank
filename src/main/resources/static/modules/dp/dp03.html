@@ -1,0 +1,33 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[DP03] SETORAN TUNAI</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">DP03</span></span>
+    </div>
+
+    <div id="dp03Msg" class="cbs-msg"></div>
+
+    <form onsubmit="cbSubmitDP03(event)">
+        <div class="cbs-panel">
+            <div class="cbs-panel-title">INPUT SETORAN</div>
+            <div class="cbs-grid-form">
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="dp03Norek">Nomor Rekening</label>
+                    <input type="text" id="dp03Norek" maxlength="20" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="dp03Nominal">Nominal Setoran (Rp), min 10.000</label>
+                    <input type="number" id="dp03Nominal" min="10000" step="0.01" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="cbs-btns">
+            <button type="submit" id="dp03Submit" class="cbs-btn cbs-btn-ok">Proses Setoran</button>
+            <button type="reset" class="cbs-btn">Bersihkan</button>
+        </div>
+    </form>
+
+    <div class="cbs-note">
+        Setoran tunai menambah saldo rekening dan tercatat sebagai transaksi KREDIT pada nomor rekening tersebut.
+    </div>
+</div>

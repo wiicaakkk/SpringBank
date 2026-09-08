@@ -1,0 +1,29 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[DP05] PENUTUPAN REKENING</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">DP05</span></span>
+    </div>
+
+    <div id="dp05Msg" class="cbs-msg"></div>
+
+    <form onsubmit="cbSubmitDP05(event)">
+        <div class="cbs-panel">
+            <div class="cbs-panel-title">DATA PENUTUPAN</div>
+            <div class="cbs-grid-form">
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="dp05Norek">Nomor Rekening</label>
+                    <input type="text" id="dp05Norek" maxlength="20" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="cbs-btns">
+            <button type="submit" id="dp05Submit" class="cbs-btn cbs-btn-ok">Tutup Rekening</button>
+            <button type="reset" class="cbs-btn">Bersihkan</button>
+        </div>
+    </form>
+
+    <div class="cbs-note">
+        Rekening hanya dapat ditutup ketika saldo sudah nol. Kosongkan saldo lebih dulu lewat transfer atau tarik tunai.
+    </div>
+</div>
