@@ -7,12 +7,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface TransaksiRepository extends JpaRepository<Transaksi, Long> {
 
     List<Transaksi> findByNomorRekeningOrderByCreatedAtDesc(String nomorRekening);
+
+    List<Transaksi> findByNomorRekeningAndCreatedAtBetweenOrderByCreatedAtAsc(
+            String nomorRekening, LocalDateTime dari, LocalDateTime sampai);
+
+    List<Transaksi> findByCreatedAtBetweenOrderByCreatedAtAsc(LocalDateTime dari, LocalDateTime sampai);
 
     @Query("""
         SELECT 

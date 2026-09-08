@@ -247,7 +247,7 @@ function cbMenu(code) {
             '  <h2>Core Banking System</h2>',
             '  <p>Modul Pendaftaran Nasabah (RC), Pengelolaan CIF, Rekening Dana (DP), Auto Transfer (AT), dan General Ledger / Neraca (GL).</p>',
             '  <p>Pilih menu pada folder di sebelah kiri untuk membuka layar transaksi.</p>',
-            '  <p>Teller: RC11, RC12, RC14, DP01-DP06, AT01, AT02. Supervisor/Admin: tambahan RC13 (audit trail) dan GL01-GL05 (neraca, jurnal, laba rugi, buku besar).</p>',
+            '  <p>Teller: RC11, RC12, RC14, DP01-DP07, AT01, AT02. Supervisor/Admin: tambahan RC13 (audit trail) dan GL01-GL05 (neraca, jurnal, laba rugi, buku besar).</p>',
             '</div>'
         ].join('\n');
         return;
@@ -309,6 +309,9 @@ function cbModuleReady(code) {
             break;
         case 'GL05':
             cbGL05Load();
+            break;
+        case 'DP07':
+            cbDP07Load();
             break;
         default:
             break;
@@ -1148,6 +1151,78 @@ function cbGL05Load() {
 }
 
 function gl05Val(id) {
+    var el = document.getElementById(id);
+    return el && el.value ? el.value : '';
+}
+
+/* ------------------------------------------------------------
+   DP07 Mutasi rekening (laporan per rekening)
+   ------------------------------------------------------------ */
+function cbDP07Load() {
+    CB.hideMsg('dp07Msg');
+
+    var noRek = document.getElementById('dp07NoRek');
+    var body = document.getElementById('dp07Body');
+    var foot = document.getElementById('dp07Foot');
+    var info = document.getElementById('dp07Info');
+    if (!body) return;
+
+    var params;
+    if (noRek && noRek.value.trim()) {
+        params = '/' + encodeURIComponent(noRek.value.trim())
+            + '/mutasi?dari=' + encodeURIComponent(dp07Val('dp07Dari')) + '&sampai=' + encodeURIComponent(dp07Val('dp07Sampai'));
+    } else {
+        info.innerHTML = 'Masukkan nomor rekening (contoh: 3436196555) lalu klik Tampilkan.';
+        foot.innerHTML = '';
+        return;
+    }
+
+    info.innerHTML = 'MEMUAT MUTASI...';
+    body.innerHTML = '<tr><td colspan="5" class="cbs-empty">MEMUAT DATA...</td></tr>';
+    foot.innerHTML = '';
+
+    CB.api('/api/rekening' + params, { method: 'GET' })
+        .then(function (res) {
+            var d = res.data;
+            var rows = d.baris || [];
+            info.innerHTML = 'Rekening: <b>' + CB.esc(d.nomorRekening)
+                + '</b> &nbsp;|&nbsp; Nasabah: <b>' + CB.esc(d.namaNasabah || '-')
+                + '</b> &nbsp;|&nbsp; Periode: ' + CB.fmtDate(d.tanggalDari) + ' s/d ' + CB.fmtDate(d.tanggalSampai)
+                + ' &nbsp;|&nbsp; <b>Saldo akhir: Rp ' + CB.fmtNum(d.saldoAkhir) + '</b>';
+
+            if (!rows.length) {
+                body.innerHTML = '<tr><td colspan="5" class="cbs-empty">TIDAK ADA MUTASI pada periode tersebut.</td></tr>';
+                foot.innerHTML = '';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < rows.length; i++) {
+                var r = rows[i];
+                html += '<tr>'
+                    + '<td class="cbs-date">' + CB.fmtDate(r.tanggal) + '</td>'
+                    + '<td><span class="' + (r.debit ? 'st-blocked' : 'st-aktif') + '">'
+                    + CB.esc(r.tipeTransaksi) + '</span></td>'
+                    + '<td>' + CB.esc(r.deskripsi || '-') + '</td>'
+                    + '<td class="cbs-num">' + (r.debit ? CB.fmtNum(r.debit) : '-') + '</td>'
+                    + '<td class="cbs-num">' + (r.kredit ? CB.fmtNum(r.kredit) : '-') + '</td>'
+                    + '</tr>';
+            }
+            body.innerHTML = html;
+            foot.innerHTML = '<tr>'
+                + '<td colspan="3">TOTAL</td>'
+                + '<td class="cbs-num">' + CB.fmtNum(d.totalDebit) + '</td>'
+                + '<td class="cbs-num">' + CB.fmtNum(d.totalKredit) + '</td>'
+                + '</tr>';
+        })
+        .catch(function (err) {
+            info.innerHTML = '';
+            body.innerHTML = '<tr><td colspan="5" class="cbs-empty">' + CB.esc(err.message) + '</td></tr>';
+            foot.innerHTML = '';
+        });
+}
+
+function dp07Val(id) {
     var el = document.getElementById(id);
     return el && el.value ? el.value : '';
 }

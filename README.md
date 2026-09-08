@@ -55,6 +55,7 @@ Semua endpoint selain login butuh header `Authorization: Bearer <token>` dari `P
 | POST | `/api/jurnal` | Posting jurnal umum (debet = kredit) untuk pendapatan/beban |
 | GET | `/api/laba-rugi?tanggal=` | Laporan laba rugi: pendapatan, beban, laba bersih |
 | GET | `/api/buku-besar?kodeAkun=&dari=&sampai=` | Ledger per akun GL dengan saldo berjalan |
+| GET | `/api/rekening/{nomorRekening}/mutasi?dari=&sampai=` | Laporan mutasi per rekening |
 | GET | `/api/v1/transaksi/summary` | Rekap transaksi |
 | POST | `/api/v1/transaksi` | Transaksi umum (debit/kredit) |
 

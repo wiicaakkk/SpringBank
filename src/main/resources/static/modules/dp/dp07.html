@@ -1,0 +1,50 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[DP07] MUTASI REKENING</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">DP07</span></span>
+    </div>
+
+    <div id="dp07Msg" class="cbs-msg"></div>
+
+    <div class="cbs-panel">
+        <div class="cbs-panel-title">MUTASI PER REKENING</div>
+        <div class="cbs-toolbar">
+            <div class="cbs-field" style="margin:0">
+                <label class="cbs-label req" for="dp07NoRek">Nomor Rekening</label>
+                <input type="text" id="dp07NoRek" maxlength="20" placeholder="contoh: 3436196555">
+            </div>
+            <div class="cbs-field" style="margin:0">
+                <label class="cbs-label" for="dp07Dari">Dari</label>
+                <input type="date" id="dp07Dari">
+            </div>
+            <div class="cbs-field" style="margin:0">
+                <label class="cbs-label" for="dp07Sampai">Sampai</label>
+                <input type="date" id="dp07Sampai">
+            </div>
+            <button type="button" class="cbs-btn cbs-btn-ok" onclick="cbDP07Load()">Tampilkan</button>
+        </div>
+
+        <div id="dp07Info" class="cbs-note" style="margin-bottom:8px"></div>
+
+        <table class="cbs-grid">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Tipe</th>
+                    <th>Keterangan</th>
+                    <th>Debit (Rp)</th>
+                    <th>Kredit (Rp)</th>
+                </tr>
+            </thead>
+            <tbody id="dp07Body">
+                <tr><td colspan="5" class="cbs-empty">Masukkan nomor rekening lalu klik Tampilkan.</td></tr>
+            </tbody>
+            <tfoot id="dp07Foot"></tfoot>
+        </table>
+    </div>
+
+    <div class="cbs-note">
+        Debit = uang keluar dari rekening, Kredit = uang masuk. Saldo akhir diambil dari rekening saat ini.
+        Data diambil dari jurnal transaksi (setoran, tarikan, transfer, auto transfer).
+    </div>
+</div>

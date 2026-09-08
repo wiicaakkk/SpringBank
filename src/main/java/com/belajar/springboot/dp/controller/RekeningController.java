@@ -3,15 +3,18 @@ package com.belajar.springboot.dp.controller;
 import com.belajar.springboot.common.dto.WebResponse;
 import com.belajar.springboot.dp.dto.CashOperationRequest;
 import com.belajar.springboot.dp.dto.CreateRekeningRequest;
+import com.belajar.springboot.dp.dto.MutasiResponse;
 import com.belajar.springboot.dp.dto.RekeningResponse;
 import com.belajar.springboot.dp.dto.TransferRequest;
 import com.belajar.springboot.dp.service.RekeningService;
+import com.belajar.springboot.dp.service.TransaksiService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,6 +23,9 @@ public class RekeningController {
 
     @Autowired
     private RekeningService rekeningService;
+
+    @Autowired
+    private TransaksiService transaksiService;
 
     @PostMapping("/create")
     public ResponseEntity<WebResponse<RekeningResponse>> createRekening(
@@ -136,6 +142,25 @@ public class RekeningController {
                 .status("SUCCESS")
                 .message("Berhasil mengambil daftar rekening CIF " + cif)
                 .data(list)
+                .build();
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{nomorRekening}/mutasi")
+    public ResponseEntity<WebResponse<MutasiResponse>> getMutasi(
+            @PathVariable("nomorRekening") String nomorRekening,
+            @RequestParam(value = "dari", required = false) String dari,
+            @RequestParam(value = "sampai", required = false) String sampai) {
+
+        LocalDate d = (dari == null || dari.isBlank()) ? null : LocalDate.parse(dari);
+        LocalDate s = (sampai == null || sampai.isBlank()) ? null : LocalDate.parse(sampai);
+
+        MutasiResponse data = transaksiService.getMutasi(nomorRekening, d, s);
+        WebResponse<MutasiResponse> response = WebResponse.<MutasiResponse>builder()
+                .status("SUCCESS")
+                .message("Mutasi rekening " + nomorRekening + " berhasil diambil")
+                .data(data)
                 .build();
         
         return ResponseEntity.ok(response);
