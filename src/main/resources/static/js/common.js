@@ -247,7 +247,7 @@ function cbMenu(code) {
             '  <h2>Core Banking System</h2>',
             '  <p>Modul Pendaftaran Nasabah (RC), Pengelolaan CIF, Rekening Dana (DP), Auto Transfer (AT), dan General Ledger / Neraca (GL).</p>',
             '  <p>Pilih menu pada folder di sebelah kiri untuk membuka layar transaksi.</p>',
-            '  <p>Teller: RC11, RC12, RC14, DP01-DP07, AT01, AT02. Supervisor/Admin: tambahan RC13 (audit trail) dan GL01-GL05 (neraca, jurnal, laba rugi, buku besar).</p>',
+            '  <p>Teller: RC11, RC12, RC14, DP01-DP08, AT01, AT02. Supervisor/Admin: tambahan RC13 (audit trail) dan GL01-GL05 (neraca, jurnal, laba rugi, buku besar).</p>',
             '</div>'
         ].join('\n');
         return;
@@ -312,6 +312,9 @@ function cbModuleReady(code) {
             break;
         case 'DP07':
             cbDP07Load();
+            break;
+        case 'DP08':
+            cbDP08Load();
             break;
         default:
             break;
@@ -1225,6 +1228,78 @@ function cbDP07Load() {
 function dp07Val(id) {
     var el = document.getElementById(id);
     return el && el.value ? el.value : '';
+}
+
+/* ------------------------------------------------------------
+   DP08 Laporan transaksi harian
+   ------------------------------------------------------------ */
+function cbDP08Load() {
+    CB.hideMsg('dp08Msg');
+
+    var body = document.getElementById('dp08Body');
+    var foot = document.getElementById('dp08Foot');
+    var info = document.getElementById('dp08Info');
+    var ringkas = document.getElementById('dp08Ringkas');
+    if (!body) return;
+
+    var tglEl = document.getElementById('dp08Tanggal');
+    var tgl = tglEl && tglEl.value ? '?tanggal=' + encodeURIComponent(tglEl.value) : '';
+
+    info.innerHTML = 'MEMUAT LAPORAN...';
+    body.innerHTML = '<tr><td colspan="7" class="cbs-empty">MEMUAT DATA...</td></tr>';
+    foot.innerHTML = '';
+    ringkas.innerHTML = '';
+
+    CB.api('/api/laporan/harian' + tgl, { method: 'GET' })
+        .then(function (res) {
+            var d = res.data;
+            var rows = d.baris || [];
+            info.innerHTML = 'Tanggal pembukuan: <b>' + CB.fmtDate(d.tanggal)
+                + '</b> &nbsp;|&nbsp; Total transaksi: <b>' + d.totalTransaksi + '</b>'
+                + ' &nbsp;|&nbsp; Debit: <b>Rp ' + CB.fmtNum(d.totalDebit)
+                + '</b> &nbsp;|&nbsp; Kredit: <b>Rp ' + CB.fmtNum(d.totalKredit) + '</b>';
+
+            if (!rows.length) {
+                body.innerHTML = '<tr><td colspan="7" class="cbs-empty">TIDAK ADA TRANSAKSI pada tanggal tersebut.</td></tr>';
+                foot.innerHTML = '';
+                ringkas.innerHTML = '';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < rows.length; i++) {
+                var r = rows[i];
+                html += '<tr>'
+                    + '<td class="cbs-date">' + CB.fmtDate(r.tanggal) + '</td>'
+                    + '<td class="cbs-mono">' + CB.esc(r.nomorRekening) + '</td>'
+                    + '<td><span class="' + (r.debit ? 'st-blocked' : 'st-aktif') + '">' + CB.esc(r.tipeTransaksi) + '</span></td>'
+                    + '<td>' + CB.esc(r.deskripsi || '-') + '</td>'
+                    + '<td>' + CB.esc(r.operatorId || '-') + '</td>'
+                    + '<td class="cbs-num">' + (r.debit ? CB.fmtNum(r.debit) : '-') + '</td>'
+                    + '<td class="cbs-num">' + (r.kredit ? CB.fmtNum(r.kredit) : '-') + '</td>'
+                    + '</tr>';
+            }
+            body.innerHTML = html;
+            foot.innerHTML = '<tr>'
+                + '<td colspan="5">TOTAL</td>'
+                + '<td class="cbs-num">' + CB.fmtNum(d.totalDebit) + '</td>'
+                + '<td class="cbs-num">' + CB.fmtNum(d.totalKredit) + '</td>'
+                + '</tr>';
+
+            var sub = '<b>Ringkasan per jenis:</b>';
+            (d.ringkasan || []).forEach(function (s) {
+                sub += '<br>&nbsp;&nbsp;' + CB.esc(s.tipeTransaksi) + ' (' + s.jumlah + 'x)'
+                    + (s.totalDebit ? ' : debit Rp ' + CB.fmtNum(s.totalDebit) : '')
+                    + (s.totalKredit ? ' : kredit Rp ' + CB.fmtNum(s.totalKredit) : '');
+            });
+            ringkas.innerHTML = sub;
+        })
+        .catch(function (err) {
+            info.innerHTML = '';
+            body.innerHTML = '<tr><td colspan="7" class="cbs-empty">' + CB.esc(err.message) + '</td></tr>';
+            foot.innerHTML = '';
+            ringkas.innerHTML = '';
+        });
 }
 
 /* ------------------------------------------------------------

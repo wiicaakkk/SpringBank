@@ -1,0 +1,46 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[DP08] LAPORAN TRANSAKSI HARIAN</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">DP08</span></span>
+    </div>
+
+    <div id="dp08Msg" class="cbs-msg"></div>
+
+    <div class="cbs-panel">
+        <div class="cbs-panel-title">REKAP KAS PER TANGGAL</div>
+        <div class="cbs-toolbar">
+            <div class="cbs-field" style="margin:0">
+                <label class="cbs-label" for="dp08Tanggal">Tanggal</label>
+                <input type="date" id="dp08Tanggal">
+            </div>
+            <button type="button" class="cbs-btn cbs-btn-ok" onclick="cbDP08Load()">Tampilkan</button>
+        </div>
+
+        <div id="dp08Info" class="cbs-note" style="margin-bottom:8px"></div>
+
+        <table class="cbs-grid">
+            <thead>
+                <tr>
+                    <th>Waktu</th>
+                    <th>No. Rekening</th>
+                    <th>Tipe</th>
+                    <th>Keterangan</th>
+                    <th>Petugas</th>
+                    <th>Debit (Rp)</th>
+                    <th>Kredit (Rp)</th>
+                </tr>
+            </thead>
+            <tbody id="dp08Body">
+                <tr><td colspan="7" class="cbs-empty">Pilih tanggal lalu klik Tampilkan.</td></tr>
+            </tbody>
+            <tfoot id="dp08Foot"></tfoot>
+        </table>
+
+        <div id="dp08Ringkas" class="cbs-note" style="margin-top:8px"></div>
+    </div>
+
+    <div class="cbs-note">
+        Rekap seluruh transaksi operasional harian. Ringkasan per jenis transaksi tampil di bawah tabel.
+        Debit = uang keluar, Kredit = uang masuk.
+    </div>
+</div>
