@@ -122,6 +122,20 @@ var CB = (function () {
         return 'st-pending';
     }
 
+    /* Sisa hari hingga jatuh tempo (null jika kosong, negatif jika lewat) */
+    function boxSisaHari(dateStr) {
+        var m = String(dateStr || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (!m) return null;
+        var date = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return Math.round((date.getTime() - today.getTime()) / 86400000);
+    }
+
+    function escJs(s) {
+        return String(s == null ? '' : s).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
     /* Otorisasi menu: RC13 hanya untuk Supervisor / Admin */
     function auth(code) {
         var s = loadSession();
@@ -151,6 +165,8 @@ var CB = (function () {
         nowClock: nowClock,
         procDate: procDate,
         esc: esc,
+        escJs: escJs,
+        boxSisaHari: boxSisaHari,
         statusClass: statusClass,
         auth: auth,
         logJson: logJson
@@ -247,13 +263,13 @@ function cbMenu(code) {
             '  <h2>Core Banking System</h2>',
             '  <p>Modul Pendaftaran Nasabah (RC), Pengelolaan CIF, Rekening Dana (DP), Auto Transfer (AT), dan General Ledger / Neraca (GL).</p>',
             '  <p>Pilih menu pada folder di sebelah kiri untuk membuka layar transaksi.</p>',
-            '  <p>Teller: RC11, RC12, RC14, DP01-DP08, AT01, AT02. Supervisor/Admin: tambahan RC13 (audit trail) dan GL01-GL05 (neraca, jurnal, laba rugi, buku besar).</p>',
+            '  <p>Teller: RC11, RC12, RC14, DP01-DP08, AT01, AT02, SB03, SB11, SB41 (safe deposit box). Supervisor/Admin: tambahan RC13 (audit trail) dan GL01-GL05 (neraca, jurnal, laba rugi, buku besar).</p>',
             '</div>'
         ].join('\n');
         return;
     }
 
-    var m = String(code).match(/^(RC|DP|AT|GL)(\d{2})$/);
+    var m = String(code).match(/^(RC|DP|AT|GL|SB)(\d{2})$/);
     if (!m) {
         CB.msg('shellMsg', 'err', 'Kode menu tidak dikenal: ' + code);
         return;
@@ -315,6 +331,15 @@ function cbModuleReady(code) {
             break;
         case 'DP08':
             cbDP08Load();
+            break;
+        case 'SB03':
+            cbSB03Load();
+            break;
+        case 'SB11':
+            cbSB11Load();
+            break;
+        case 'SB41':
+            cbSB41Load();
             break;
         default:
             break;
@@ -1300,6 +1325,171 @@ function cbDP08Load() {
             foot.innerHTML = '';
             ringkas.innerHTML = '';
         });
+}
+
+/* ------------------------------------------------------------
+   SB03 Inquiry safe deposit box
+   ------------------------------------------------------------ */
+function cbSB03Load() {
+    CB.hideMsg('sb03Msg');
+
+    var body = document.getElementById('sb03Body');
+    if (!body) return;
+
+    var status = sbVal('sb03Status');
+    var params = status ? '?status=' + encodeURIComponent(status) : '';
+
+    body.innerHTML = '<tr><td colspan="8" class="cbs-empty">MEMUAT DATA...</td></tr>';
+
+    CB.api('/api/box' + params, { method: 'GET' })
+        .then(function (res) {
+            var rows = res.data || [];
+            if (!rows.length) {
+                body.innerHTML = '<tr><td colspan="8" class="cbs-empty">TIDAK ADA BOX pada filter tersebut.</td></tr>';
+                return;
+            }
+            var html = '';
+            for (var i = 0; i < rows.length; i++) {
+                var b = rows[i];
+                var tersedia = b.status === 'TERSEDIA';
+                var sisa = CB.boxSisaHari(b.tanggalJatuhTempo);
+                html += '<tr>'
+                    + '<td class="cbs-mono">' + CB.esc(b.nomorBox) + '</td>'
+                    + '<td><span class="' + (tersedia ? 'st-aktif' : 'st-blocked') + '">' + CB.esc(b.status) + '</span></td>'
+                    + '<td>' + CB.esc(b.namaPenyewa || '-') + (b.cifPenyewa ? ' (' + CB.esc(b.cifPenyewa) + ')' : '') + '</td>'
+                    + '<td class="cbs-date">' + (b.tanggalMulai ? CB.fmtDate(b.tanggalMulai) : '-') + '</td>'
+                    + '<td class="cbs-date">' + (b.tanggalJatuhTempo ? CB.fmtDate(b.tanggalJatuhTempo) : '-') + '</td>'
+                    + '<td class="cbs-num">' + (sisa === null ? '-' : sisa) + '</td>'
+                    + '<td class="cbs-num">' + (b.tarifSewa ? CB.fmtNum(b.tarifSewa) : '-') + '</td>'
+                    + '<td>' + (tersedia
+                        ? '<button type="button" class="cbs-btn cbs-btn-sm" onclick="cbMenu(\'SB11\')">Sewa</button>'
+                        : '<button type="button" class="cbs-btn cbs-btn-sm" onclick="cbSB03Kembali(\'' + CB.escJs(b.nomorBox) + '\')">Kembalikan</button>')
+                    + '</td>'
+                    + '</tr>';
+            }
+            body.innerHTML = html;
+        })
+        .catch(function (err) {
+            body.innerHTML = '<tr><td colspan="8" class="cbs-empty">' + CB.esc(err.message) + '</td></tr>';
+        });
+}
+
+function cbSB03Kembali(nomorBox) {
+    if (!window.confirm('Kembalikan box ' + nomorBox + ' ke status TERSEDIA?')) return;
+    CB.api('/api/box/' + encodeURIComponent(nomorBox) + '/kembali', { method: 'POST', body: {} })
+        .then(function (res) {
+            CB.msg('sb03Msg', 'ok', res.message);
+            cbSB03Load();
+        })
+        .catch(function (err) {
+            CB.msg('sb03Msg', 'err', err.message);
+        });
+}
+
+/* ------------------------------------------------------------
+   SB11 Sewa box
+   ------------------------------------------------------------ */
+function cbSB11Load() {
+    CB.hideMsg('sb11Msg');
+
+    var sel = document.getElementById('sb11NoBox');
+    if (!sel) return;
+
+    CB.api('/api/box?status=TERSEDIA', { method: 'GET' })
+        .then(function (res) {
+            var rows = res.data || [];
+            if (!rows.length) {
+                sel.innerHTML = '<option value="">TIDAK ADA BOX TERSEDIA</option>';
+                return;
+            }
+            var html = '';
+            for (var i = 0; i < rows.length; i++) {
+                html += '<option value="' + CB.esc(rows[i].nomorBox) + '">' + CB.esc(rows[i].nomorBox) + '</option>';
+            }
+            sel.innerHTML = html;
+        })
+        .catch(function (err) {
+            sel.innerHTML = '<option value="">' + CB.esc(err.message) + '</option>';
+        });
+}
+
+function cbSubmitSB11(e) {
+    if (e.preventDefault) e.preventDefault();
+    CB.hideMsg('sb11Msg');
+
+    var body = {
+        nomorBox: document.getElementById('sb11NoBox').value,
+        cifPenyewa: document.getElementById('sb11Cif').value.trim(),
+        namaPenyewa: document.getElementById('sb11Nama').value.trim(),
+        nomorRekening: document.getElementById('sb11Rekening').value.trim() || null,
+        periodeBulan: Number(document.getElementById('sb11Periode').value) || 0,
+        biayaSewa: Number(document.getElementById('sb11Biaya').value) || 0
+    };
+
+    CB.api('/api/box/sewa', { method: 'POST', body: body })
+        .then(function (res) {
+            CB.msg('sb11Msg', 'ok', res.message);
+            CB.logJson('POST /api/box/sewa', res);
+            document.getElementById('sb11Submit').disabled = true;
+        })
+        .catch(function (err) {
+            CB.msg('sb11Msg', 'err', 'SEWA GAGAL: ' + err.message);
+        });
+}
+
+/* ------------------------------------------------------------
+   SB41 Bayar / perpanjang sewa box
+   ------------------------------------------------------------ */
+function cbSB41Load() {
+    CB.hideMsg('sb41Msg');
+
+    var sel = document.getElementById('sb41NoBox');
+    if (!sel) return;
+
+    CB.api('/api/box?status=TERSEWA', { method: 'GET' })
+        .then(function (res) {
+            var rows = res.data || [];
+            if (!rows.length) {
+                sel.innerHTML = '<option value="">TIDAK ADA BOX TERSEWA</option>';
+                return;
+            }
+            var html = '';
+            for (var i = 0; i < rows.length; i++) {
+                html += '<option value="' + CB.esc(rows[i].nomorBox) + '">'
+                    + CB.esc(rows[i].nomorBox) + ' - ' + CB.esc(rows[i].namaPenyewa || '-')
+                    + '</option>';
+            }
+            sel.innerHTML = html;
+        })
+        .catch(function (err) {
+            sel.innerHTML = '<option value="">' + CB.esc(err.message) + '</option>';
+        });
+}
+
+function cbSubmitSB41(e) {
+    if (e.preventDefault) e.preventDefault();
+    CB.hideMsg('sb41Msg');
+
+    var noBox = document.getElementById('sb41NoBox').value;
+    var body = {
+        periodeBulan: Number(document.getElementById('sb41Periode').value) || 0,
+        biayaSewa: Number(document.getElementById('sb41Biaya').value) || 0
+    };
+
+    CB.api('/api/box/' + encodeURIComponent(noBox) + '/bayar', { method: 'POST', body: body })
+        .then(function (res) {
+            CB.msg('sb41Msg', 'ok', res.message);
+            CB.logJson('POST /api/box/{box}/bayar', res);
+            document.getElementById('sb41Submit').disabled = true;
+        })
+        .catch(function (err) {
+            CB.msg('sb41Msg', 'err', 'PEMBAYARAN GAGAL: ' + err.message);
+        });
+}
+
+function sbVal(id) {
+    var el = document.getElementById(id);
+    return el ? el.value : '';
 }
 
 /* ------------------------------------------------------------

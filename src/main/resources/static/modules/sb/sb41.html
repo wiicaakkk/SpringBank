@@ -1,0 +1,41 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[SB41] BAYAR / PERPANJANG SEWA BOX</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">SB41</span></span>
+    </div>
+
+    <div id="sb41Msg" class="cbs-msg"></div>
+
+    <form onsubmit="cbSubmitSB41(event)">
+        <div class="cbs-panel">
+            <div class="cbs-panel-title">PERPANJANG SEWA BOX</div>
+            <div class="cbs-grid-form">
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="sb41NoBox">Nomor Box (tersewa)</label>
+                    <select id="sb41NoBox" required>
+                        <option value="">MEMUAT...</option>
+                    </select>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="sb41Periode">Tambahan (bulan)</label>
+                    <input type="number" id="sb41Periode" min="1" value="12" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="sb41Biaya">Biaya Perpanjangan (Rp)</label>
+                    <input type="number" id="sb41Biaya" min="1" step="0.01" required>
+                </div>
+            </div>
+            <div id="sb41Info" class="cbs-note" style="margin-top:8px"></div>
+        </div>
+
+        <div class="cbs-btns">
+            <button type="submit" id="sb41Submit" class="cbs-btn cbs-btn-ok">Bayar / Perpanjang</button>
+            <button type="reset" class="cbs-btn">Bersihkan</button>
+        </div>
+    </form>
+
+    <div class="cbs-note">
+        Pembayaran menambah jatuh tempo dan memposting Pendapatan Jasa ke GL.
+        Pengembalian box ke status TERSEDIA dilakukan dari layar SB03 (aksi Kembalikan).
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[SB11] SEWA SAFE DEPOSIT BOX</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">SB11</span></span>
+    </div>
+
+    <div id="sb11Msg" class="cbs-msg"></div>
+
+    <form onsubmit="cbSubmitSB11(event)">
+        <div class="cbs-panel">
+            <div class="cbs-panel-title">SEWA BOX BARU</div>
+            <div class="cbs-grid-form">
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="sb11NoBox">Nomor Box (tersedia)</label>
+                    <select id="sb11NoBox" required>
+                        <option value="">MEMUAT...</option>
+                    </select>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="sb11Cif">CIF Penyewa</label>
+                    <input type="text" id="sb11Cif" maxlength="20" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="sb11Nama">Nama Penyewa</label>
+                    <input type="text" id="sb11Nama" maxlength="100" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label" for="sb11Rekening">No. Rekening (opsional)</label>
+                    <input type="text" id="sb11Rekening" maxlength="20">
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="sb11Periode">Periode (bulan)</label>
+                    <input type="number" id="sb11Periode" min="1" value="12" required>
+                </div>
+                <div class="cbs-field">
+                    <label class="cbs-label req" for="sb11Biaya">Biaya Sewa (Rp)</label>
+                    <input type="number" id="sb11Biaya" min="1" step="0.01" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="cbs-btns">
+            <button type="submit" id="sb11Submit" class="cbs-btn cbs-btn-ok">Sewa Box</button>
+            <button type="reset" class="cbs-btn">Bersihkan</button>
+        </div>
+    </form>
+
+    <div class="cbs-note">
+        Biaya sewa otomatis dibukukan: Dr Kas / Cr Pendapatan Jasa (terlihat di Laba Rugi dan Neraca).
+    </div>
+</div>

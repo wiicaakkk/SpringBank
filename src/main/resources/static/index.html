@@ -149,6 +149,24 @@
                     </div>
                 </div>
 
+                <div class="menu-group">
+                    <div class="menu-group-head" onclick="cbToggleGroup('grpSB', this)" tabindex="0"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){cbToggleGroup('grpSB', this);event.preventDefault()}">
+                        <span class="glyph">[-]</span> SAFE DEPOSIT BOX
+                    </div>
+                    <div class="menu-items" id="grpSB">
+                        <button type="button" class="menu-item" onclick="cbMenu('SB03')">
+                            <span class="txcd">SB03</span>Inquiry Box
+                        </button>
+                        <button type="button" class="menu-item" onclick="cbMenu('SB11')">
+                            <span class="txcd">SB11</span>Sewa Box
+                        </button>
+                        <button type="button" class="menu-item" onclick="cbMenu('SB41')">
+                            <span class="txcd">SB41</span>Bayar / Perpanjang
+                        </button>
+                    </div>
+                </div>
+
                 <div class="cbs-note" style="margin-top:10px">
                     Pakai tombol menu, atau tulis kode layar pada modul aktif. RC13 dibatasi Supervisor / Admin.
                 </div>

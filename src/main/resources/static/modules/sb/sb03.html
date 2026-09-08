@@ -1,0 +1,45 @@
+<div class="cbs-screen">
+    <div class="cbs-topbar">
+        <span class="cbs-topbar-title">[SB03] INQUIRY SAFE DEPOSIT BOX</span>
+        <span class="cbs-topbar-right">TxCode: <span class="cbs-txcd">SB03</span></span>
+    </div>
+
+    <div id="sb03Msg" class="cbs-msg"></div>
+
+    <div class="cbs-panel">
+        <div class="cbs-panel-title">DAFTAR BOX</div>
+        <div class="cbs-toolbar">
+            <div class="cbs-field" style="margin:0">
+                <label class="cbs-label" for="sb03Status">Status</label>
+                <select id="sb03Status">
+                    <option value="">SEMUA</option>
+                    <option value="TERSEDIA">TERSEDIA</option>
+                    <option value="TERSEWA">TERSEWA</option>
+                </select>
+            </div>
+            <button type="button" class="cbs-btn cbs-btn-ok" onclick="cbSB03Load()">Tampilkan</button>
+        </div>
+
+        <table class="cbs-grid">
+            <thead>
+                <tr>
+                    <th>No. Box</th>
+                    <th>Status</th>
+                    <th>Penyewa (CIF)</th>
+                    <th>Mulai</th>
+                    <th>Jatuh Tempo</th>
+                    <th>Sisa Hari</th>
+                    <th>Tarif (Rp)</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="sb03Body">
+                <tr><td colspan="8" class="cbs-empty">MEMUAT DATA...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="cbs-note">
+        Sewa box lewat SB11, perpanjangan lewat SB41. Biaya sewa diposting otomatis sebagai Pendapatan Jasa.
+    </div>
+</div>

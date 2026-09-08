@@ -53,6 +53,9 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private GlPostingService glPostingService;
 
+    @Autowired
+    private com.belajar.springboot.sb.repository.SafeDepositBoxRepository safeDepositBoxRepository;
+
     @Override
     public void run(String... args) throws Exception {
         if (userRepository.count() == 0) {
@@ -230,6 +233,17 @@ public class DataInitializer implements CommandLineRunner {
                 }
             }
             System.out.println("[INITIALIZER] Chart of Accounts Berhasil Disinkronkan!");
+        }
+
+        if (safeDepositBoxRepository.count() == 0) {
+            for (int i = 1; i <= 6; i++) {
+                String nomor = String.format("SB-%03d", i);
+                safeDepositBoxRepository.save(com.belajar.springboot.sb.entity.SafeDepositBox.builder()
+                        .nomorBox(nomor)
+                        .status(com.belajar.springboot.sb.entity.StatusBox.TERSEDIA)
+                        .build());
+            }
+            System.out.println("[INITIALIZER] 6 Box Safe Deposit Berhasil Diseeded (SB-001 .. SB-006)!");
         }
 
         if (glEntryRepository.count() == 0) {

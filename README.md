@@ -57,6 +57,10 @@ Semua endpoint selain login butuh header `Authorization: Bearer <token>` dari `P
 | GET | `/api/buku-besar?kodeAkun=&dari=&sampai=` | Ledger per akun GL dengan saldo berjalan |
 | GET | `/api/rekening/{nomorRekening}/mutasi?dari=&sampai=` | Laporan mutasi per rekening |
 | GET | `/api/laporan/harian?tanggal=` | Rekap transaksi harian + ringkasan per jenis |
+| GET | `/api/box?status=` | Inquiry safe deposit box, filter status TERSEDIA/TERSEWA (SB03) |
+| POST | `/api/box/sewa` | Sewa box: Dr Kas / Cr Pendapatan Jasa (SB11) |
+| POST | `/api/box/{nomorBox}/bayar` | Perpanjang sewa: perpanjang jatuh tempo + posting pendapatan (SB41) |
+| POST | `/api/box/{nomorBox}/kembali` | Kembalikan box ke status TERSEDIA |
 | GET | `/api/v1/transaksi/summary` | Rekap transaksi |
 | POST | `/api/v1/transaksi` | Transaksi umum (debit/kredit) |
 
